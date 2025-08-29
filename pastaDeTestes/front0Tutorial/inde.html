@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./style.css">
+  <title>Tabela de Comandos Git</title>
+</head>
+<body>
+  <table>
+    <caption>Comandos Git - Guia Rápido</caption>
+    <thead>
+      <tr>
+        <th>Categoria</th>
+        <th>Comando</th>
+        <th>Explicação</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Configuração -->
+      <tr class="config">
+        <td rowspan="3">Configuração Inicial</td>
+        <td><code>git config --global user.name "Seu Nome"</code></td>
+        <td>Define o nome do autor dos commits.</td>
+      </tr>
+      <tr class="config">
+        <td><code>git config --global user.email "email@exemplo.com"</code></td>
+        <td>Define o e-mail associado aos commits.</td>
+      </tr>
+      <tr class="config">
+        <td><code>git config --list</code></td>
+        <td>Exibe todas as configurações atuais do Git.</td>
+      </tr>
+
+      <!-- Clonagem -->
+      <tr class="clone">
+        <td rowspan="2">Criação e Clonagem</td>
+        <td><code>git init</code></td>
+        <td>Inicia um repositório Git na pasta atual.</td>
+      </tr>
+      <tr class="clone">
+        <td><code>git clone &lt;url&gt;</code></td>
+        <td>Baixa um repositório remoto para sua máquina.</td>
+      </tr>
+
+      <!-- Status -->
+      <tr class="status">
+        <td rowspan="4">Status e Histórico</td>
+        <td><code>git status</code></td>
+        <td>Mostra alterações feitas e arquivos prontos para commit.</td>
+      </tr>
+      <tr class="status">
+        <td><code>git log</code></td>
+        <td>Mostra o histórico completo de commits.</td>
+      </tr>
+      <tr class="status">
+        <td><code>git log --oneline</code></td>
+        <td>Exibe o histórico resumido (um commit por linha).</td>
+      </tr>
+      <tr class="status">
+        <td><code>git diff</code></td>
+        <td>Mostra diferenças entre código atual e último commit.</td>
+      </tr>
+
+      <!-- Controle -->
+      <tr class="controle">
+        <td rowspan="4">Controle de Alterações</td>
+        <td><code>git add &lt;arquivo&gt;</code></td>
+        <td>Adiciona um arquivo para a staging area.</td>
+      </tr>
+      <tr class="controle">
+        <td><code>git add .</code></td>
+        <td>Adiciona todos os arquivos modificados.</td>
+      </tr>
+      <tr class="controle">
+        <td><code>git commit -m "mensagem"</code></td>
+        <td>Cria um commit com os arquivos adicionados.</td>
+      </tr>
+      <tr class="controle">
+        <td><code>git commit -am "mensagem"</code></td>
+        <td>Adiciona e commita de uma vez (apenas arquivos já rastreados).</td>
+      </tr>
+
+      <!-- Branches -->
+      <tr class="branch">
+        <td rowspan="5">Branches</td>
+        <td><code>git branch</code></td>
+        <td>Lista as branches existentes.</td>
+      </tr>
+      <tr class="branch">
+        <td><code>git branch &lt;nome&gt;</code></td>
+        <td>Cria uma nova branch.</td>
+      </tr>
+      <tr class="branch">
+        <td><code>git checkout &lt;nome&gt;</code></td>
+        <td>Muda para uma branch existente.</td>
+      </tr>
+      <tr class="branch">
+        <td><code>git checkout -b &lt;nome&gt;</code></td>
+        <td>Cria e já muda para a nova branch.</td>
+      </tr>
+      <tr class="branch">
+        <td><code>git merge &lt;branch&gt;</code></td>
+        <td>Mescla a branch especificada com a atual.</td>
+      </tr>
+
+      <!-- Remoto -->
+      <tr class="remoto">
+        <td rowspan="5">Repositório Remoto</td>
+        <td><code>git remote -v</code></td>
+        <td>Lista os repositórios remotos configurados.</td>
+      </tr>
+      <tr class="remoto">
+        <td><code>git remote add origin &lt;url&gt;</code></td>
+        <td>Conecta o repositório local a um remoto.</td>
+      </tr>
+      <tr class="remoto">
+        <td><code>git push origin &lt;branch&gt;</code></td>
+        <td>Envia commits da branch local para o remoto.</td>
+      </tr>
+      <tr class="remoto">
+        <td><code>git pull origin &lt;branch&gt;</code></td>
+        <td>Atualiza a branch local com mudanças do remoto.</td>
+      </tr>
+      <tr class="remoto">
+        <td><code>git fetch</code></td>
+        <td>Baixa mudanças do remoto sem mesclar.</td>
+      </tr>
+
+      <!-- Reset -->
+      <tr class="reset">
+        <td rowspan="4">Reversão</td>
+        <td><code>git reset --soft &lt;hash&gt;</code></td>
+        <td>Volta a um commit, mantendo alterações na staging.</td>
+      </tr>
+      <tr class="reset">
+        <td><code>git reset --hard &lt;hash&gt;</code></td>
+        <td>Volta a um commit e descarta tudo após ele.</td>
+      </tr>
+      <tr class="reset">
+        <td><code>git revert &lt;hash&gt;</code></td>
+        <td>Cria um novo commit que desfaz um anterior.</td>
+      </tr>
+      <tr class="reset">
+        <td><code>git checkout -- &lt;arquivo&gt;</code></td>
+        <td>Desfaz alterações locais em um arquivo.</td>
+      </tr>
+
+      <!-- Stash -->
+      <tr class="stash">
+        <td rowspan="4">Stash</td>
+        <td><code>git stash</code></td>
+        <td>Guarda alterações temporariamente sem commit.</td>
+      </tr>
+      <tr class="stash">
+        <td><code>git stash list</code></td>
+        <td>Mostra todas as stashes salvas.</td>
+      </tr>
+      <tr class="stash">
+        <td><code>git stash apply</code></td>
+        <td>Aplica a última stash sem removê-la da lista.</td>
+      </tr>
+      <tr class="stash">
+        <td><code>git stash pop</code></td>
+        <td>Aplica e remove a última stash da lista.</td>
+      </tr>
+
+      <!-- Tags -->
+      <tr class="tags">
+        <td rowspan="3">Tags</td>
+        <td><code>git tag</code></td>
+        <td>Lista todas as tags existentes.</td>
+      </tr>
+      <tr class="tags">
+        <td><code>git tag &lt;nome&gt;</code></td>
+        <td>Cria uma nova tag.</td>
+      </tr>
+      <tr class="tags">
+        <td><code>git push origin &lt;tag&gt;</code></td>
+        <td>Envia a tag para o repositório remoto.</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3">Essa tabela resume os principais comandos Git usados no dia a dia 🚀</td>
+      </tr>
+    </tfoot>
+  </table>
+</body>
+</html>
