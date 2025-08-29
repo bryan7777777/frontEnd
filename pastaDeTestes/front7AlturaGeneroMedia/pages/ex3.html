@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- CSS -->
+    <style>
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: rgb(253, 121, 121);
+            border-radius: 25px;
+            width: 40vw;
+            height: 50vh;
+            margin-top: 20vh;
+        }
+
+        #result{
+            width: 80%;
+            padding: 20px;
+            background-color: aliceblue;
+            border-radius: 25px;
+        }
+    </style>
+
+    <!-- HTML -->
+    <form action="">
+        <label for="">Segundos</label>
+        <input type="number" id="seg">
+
+        <input type="button" value="calcular" id="calcular">
+
+        <div id="result">
+            <div>
+                <h2>tempo:</h2>
+                <p id="tempo">0</p>
+            </div>
+        </div>
+    </form>
+
+    <!-- JS -->
+    <script>
+        document.getElementById('calcular').addEventListener('click', calcular);
+
+        function calcular() {
+            const seg = parseFloat(document.getElementById('seg').value);
+            let min, hr, s, tempo;
+            min = 0
+            hr = 0
+            s = seg;
+
+            while (s <= 60) {
+                s = s - 60
+                min = min + 1
+            }
+
+            while (min <= 60) {
+                min = min - 60
+                hr = hr + 1
+            }
+
+            tempo = `${hr} : ${min} : ${s}`;
+
+            const x = document.getElementById('tempo');
+            x.innerHTML = tempo;
+        }
+    </script>
+</body>
+</html>

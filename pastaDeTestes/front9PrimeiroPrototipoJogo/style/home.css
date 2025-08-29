@@ -1,0 +1,8 @@
+#mapContainer, #batalha, #loja{
+    display: none;
+}
+
+img{
+    height: 100px;
+    width: 100px;
+}

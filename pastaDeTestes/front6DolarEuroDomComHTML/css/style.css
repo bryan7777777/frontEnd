@@ -1,0 +1,42 @@
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    color: rgb(0, 25, 80);
+}
+
+#form {
+    background-color: rgb(0, 25, 80);
+    color: rgb(198, 239, 255);
+    display: flex;
+    flex-direction: column;
+    width: 35vw;
+    padding: 5%;
+    gap: 25px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7%;
+    box-shadow: 5px 5px 10px rgb(0, 25, 80);
+}
+
+#qualConverter, #converter, #result {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    text-align: center;
+}
+
+.form__box {
+    background-color: rgb(198, 239, 255);
+}
+
+#button:hover input{
+    background-color: rgb(190, 255, 187);
+    color: rgb(0, 116, 0);
+}

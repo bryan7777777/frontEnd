@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: rgb(253, 121, 121);
+            border-radius: 25px;
+            width: 40vw;
+            height: 50vh;
+            margin-top: 20vh;
+        }
+
+        #result{
+            width: 80%;
+            padding: 20px;
+            background-color: aliceblue;
+            border-radius: 25px;
+        }
+    </style>
+
+    <!-- HTML -->
+    <form action="">
+        <label for="">Altura do retangulo</label>
+        <input type="number" id="altura">
+
+        <label for="">Base do retangulo</label>
+        <input type="number" id="base">
+
+        <input type="button" value="calcular" id="calcular">
+
+        <div id="result">
+            <div>
+                <h2>area:</h2>
+                <p id="area"></p>
+            </div>
+            <div>
+                <h2>perimetro:</h2>
+                <p id="perimetro"></p>
+            </div>
+            <div>
+                <h2>diagonal:</h2>
+                <p id="diagonal"></p>
+            </div>
+        </div>
+    </form>
+
+    <!-- JS -->
+    <script>
+        document.getElementById('calcular').addEventListener('click', calcular);
+
+        function calcular() {
+            const altura = document.getElementById('altura').value;
+            const base = document.getElementById('base').value;
+            
+            let area = base * altura;
+            let perimetro = (base + altura) * 2;
+            let diagonal = Math.sqrt(base ** 2 + altura ** 2);
+
+            const resultArea = document.getElementById('area');
+            resultArea.innerHTML = area.toFixed(4);
+
+            const resultPerimetro = document.getElementById('perimetro');
+            resultPerimetro.innerHTML = perimetro.toFixed(4);
+
+            const resultDiagonal = document.getElementById('diagonal');
+            resultDiagonal.innerHTML = diagonal.toFixed(4);
+        }
+    </script>
+</body>
+</html>

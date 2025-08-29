@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/tabuada.js"></script>
+    <link rel="stylesheet" href="../css/tabuada.css">
+</head>
+<body>
+    <h2>CONVERSOR</h2>
+    <a href="./html/tabuada.html" target="_blank"><button>CLIQUE AQUI PARA IR ATÉ O CONVERSOR</button></a>
+
+    <div id="tabuada">
+    <h2>TABUADA</h2>
+
+    <form action="" id="tabuadaForm">
+        <div id="bloco">
+        <div class="form__element">
+            <label for="multiplicador">Qual valor você quer multiplicar?</label>
+            <input type="number" id="multiplicador" class="form__textBox" min="0">
+        </div>
+        <div class="form__element">
+            <label for="limiteInicio">Qual valor deseja que a multiplição começe?</label>
+            <input type="number" id="limiteInicio" class="form__textBox" min="0">
+        </div>
+        <div class="form__element">
+            <label for="limiteFim">Até quanto deseja multiplicar?</label>
+            <input type="number" id="limiteFim" class="form__textBox" min="0">
+        </div>
+        </div>
+        <div class="form__button">
+            <input type="button" value="Calcular" id="buttonCalcular" onclick="main();" class="form__textBox">
+        </div>
+
+    </form>
+
+    <table id="table">
+        
+        <!-- <tr>
+            <th>2</th>
+            <th>X</th>
+            <th>2</th>
+            <th>=</th>
+            <th>4</th>
+        </tr>
+        <tr>
+            <th>2</th>
+            <th>X</th>
+            <th>2</th>
+            <th>=</th>
+            <th>4</th>
+        </tr> -->
+    </table>
+    </div>
+</body>
+</html>

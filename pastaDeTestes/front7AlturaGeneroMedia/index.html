@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- CSS -->
+    <style>
+        
+    </style>
+
+    <!-- HTML -->
+    <form action="">
+        
+    </form>
+
+    <!-- JS -->
+    <script>
+        function calcular() {
+            // INICIO
+            let numPessoas = prompt("Quantas pessoas voce quer calcular?");
+            const pessoas = [alturas = [], generos = []];
+            let alturaMax = 0;
+            let homens = 0;
+            let mulheres = 0;
+            let mediaAlturaMulher = 0;
+            let mediaAlturaHomem = 0;
+            let calcularMediaMM = 0;
+            let calcularMediaHH = 0;
+            let alturaMin = 9999999;
+
+            // NUMERO DE PESSOAS
+            for (let i = 0; i < numPessoas; i++) {
+                let altura = Number(prompt(`Qual a altura da ${i + 1} pessoa?`));
+                let genero = prompt(`Qual o genero da ${i + 1} pessoa?`);
+                alturas.push(altura);
+                generos.push(genero);
+            }
+
+            // ALTURA
+            for (let i = 0; i < alturas.length; i++) {
+                if (alturaMax < alturas[i]) {
+                    alturaMax = alturas[i];
+                }
+
+                if (alturaMin > alturas[i]) {
+                    alturaMin = alturas[i];
+                }
+            }
+
+            // MEDIA
+            for (let i = 0; i < generos.length; i++) {
+                if (generos[i] == "F" || generos[i] == "f") {
+                    calcularMediaMM = calcularMediaMM + alturas[i];
+                    mulheres++;
+                } else if (generos[i] == "M" || generos[i] == "m"){
+                    calcularMediaHH = calcularMediaHH + alturas[i];
+                    homens++;
+                }
+            }
+
+            if (mulheres > 0) {
+                calcularMediaMM = calcularMediaMM / mulheres;
+                mediaAlturaMulher = calcularMediaMM.toFixed(2);
+            }
+
+            if (homens > 0) {
+                calcularMediaHH = calcularMediaHH / homens;
+                mediaAlturaHomem = calcularMediaHH.toFixed(2);
+            }
+
+            // UNDEFINED
+            if (alturaMin == 9999999) {
+                alturaMin = 'INDEFINIDO';
+                alturaMax = 'INDEFINIDO';
+                mediaAlturaMulher = 'INDEFINIDO';
+                mediaAlturaHomem = 'INDEFINIDO';
+                homens = 'INDEFINIDO';
+                mulheres = 'INDEFINIDO';
+
+            }
+
+            if (mediaAlturaMulher == 0) {
+                mediaAlturaMulher = 'Nao há mulheres';
+            }
+
+            if (mediaAlturaHomem == 0) {
+                mediaAlturaHomem = 'Nao há homens';
+            } 
+
+            alert(`
+a maior altura foi ${alturaMax} 
+e a menor altura foi ${alturaMin}
+a media das mulheres foi ${mediaAlturaMulher}
+e a media dos homens foi ${mediaAlturaHomem} 
+a quantidade de mulheres foi ${mulheres}
+e a quantidade de homens foi ${homens}`);
+        }
+
+        calcular();
+    </script>
+</body>
+</html>

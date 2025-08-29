@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/script.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <h2>TABUADA</h2>
+    <a href="./html/tabuada.html" target="_blank"><button>CLIQUE AQUI PARA IR ATÉ A TABUADA</button></a>
+    <h2>CONVERSOR</h2>
+    <form action="" id="form">
+        <div id="qualConverter">
+            <label for="DolarOuEuro">Digite 1 para Dolar, Digite 2 para Euro</label>
+            <input type="number" class="form__box" id="DolarOuEuro" min="1" max="2">
+        </div>
+
+        <div id="converter">
+            <label for="valor">Quanto você deseja converter?</label>
+            <input type="number" class="form__box" id="quantoConverter" min="0">
+        </div>
+
+        <div id="result">
+            <label for="resultado">Resultado da conversão</label>
+            <input type="text" class="form__box" id="nomeDaMoeda">
+            <input type="number" class="form__box" id="valorConvertido">
+        </div>
+
+        <div id="button">
+            <input type="button" value="Calcular a conversão" class="form__box" onclick="main();">
+        </div>
+    </form>
+</body>
+</html>

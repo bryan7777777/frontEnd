@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- CSS -->
+    <style>
+        body{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        form{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: rgb(253, 121, 121);
+            border-radius: 25px;
+            width: 40vw;
+            height: 50vh;
+            margin-top: 20vh;
+        }
+
+        #result{
+            width: 80%;
+            padding: 20px;
+            background-color: aliceblue;
+            border-radius: 25px;
+        }
+    </style>
+
+    <!-- HTML -->
+    <form action="">
+        <label for="">Largura do terreno</label>
+        <input type="number" id="lgTrr">
+
+        <label for="">Comprimento do terreno</label>
+        <input type="number" id="cmpTrr">
+
+        <label for="">Valor do metro quadrado</label>
+        <input type="number" id="metro">
+
+        <input type="button" value="calcular" id="calcular">
+
+        <div id="result">
+            <div>
+                <h2>area do terreno:</h2>
+                <p id="area">0</p>
+            </div>
+            <div>
+                <h2>preço do terreno</h2>
+                <p id="preco">0</p>
+            </div>
+        </div>
+    </form>
+
+    <!-- JS -->
+    <script>
+        document.getElementById('calcular').addEventListener('click', calcular);
+
+        function calcular() {
+            const larTerreno = document.getElementById('lgTrr').value;
+            const comTerreno = document.getElementById('cmpTrr').value;
+            const valorMetros = document.getElementById('metro').value;
+            
+            let result = larTerreno * comTerreno;
+            let preco = result * valorMetros;
+
+            const resultMetros = document.getElementById('area');
+            resultMetros.innerHTML = result.toFixed(2);
+
+            const resultPreco = document.getElementById('preco');
+            resultPreco.innerHTML = preco.toFixed(2);
+        }
+    </script>
+</body>
+</html>

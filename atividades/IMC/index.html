@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/index.js"></script>
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- HEADER -->
+    <header>
+        <div class="header">
+            <img src="./img/logoPeso.jpeg" alt="" id="logo">
+        </div>
+    </header>
+    <!-- MAIN -->
+    <main>
+        <div id="introducao">
+            <h1 id="introducaoH1">Introdução</h1>
+            <p>Um medidor de peso baseado em altura ajuda a avaliar se uma pessoa está dentro de um peso considerado
+                saudável para sua estatura. Geralmente, ele utiliza o Índice de Massa Corporal (IMC), que é calculado
+                dividindo o peso (kg) pela altura ao quadrado (m²). Esse indicador classifica o peso em faixas como
+                abaixo do peso, peso normal, sobrepeso e obesidade.</p>
+            <p>
+                Ao inserir seus dados no site, você receberá uma análise rápida para entender sua situação e, se
+                necessário, buscar orientações para melhorar sua saúde. <span class="enfase">Lembre-se de que esse cálculo é apenas uma
+                referência e não substitui uma avaliação médica mais detalhada!</span></p>
+        </div>
+        <form action="" id="infoUsuario">
+            <h1 id="formH1">Calcule seu peso aqui!</h1>
+            <div id="txtUser">
+                <div class="txtUser__box">
+                    <label for="peso">Informe seu peso</label>
+                    <input type="number" class="txtUser1" id="peso" min="0" placeholder="0">
+                </div>
+                <div class="txtUser__box">
+                    <label for="altura">Informe sua altura</label>
+                    <input type="number" class="txtUser1" id="altura" min="0" placeholder="0">
+                </div>
+                <div class="txtUser__box">
+                    <label for="genero">Informe seu genero</label>
+                    <select name="generos" id="generos">
+                        <option value="masculino">Masculino</option>
+                        <option value="feminino">Feminino</option>
+                    </select>
+                </div>
+            </div>
+            <a href="#tabela"><input type="button" id="button" value="Clique aqui para calcular!" onclick="main();"></a>
+            <div id="tabela">
+                <div class="bloco">
+                <div id="tabela__infos">
+                    <div class="tabela__infos--caixas">
+                    <h1>Seu grau de peso:</h1>
+                    <p id="seuPeso" class="tabela__infos"></p>
+                    </div>
+
+                    <div class="tabela__infos--caixas">
+                    <h1>IMC:</h1>
+                    <p id="imc" class="tabela__infos"></p>
+                    </div>
+
+                    <div class="tabela__infos--caixas">
+                    <h1>Peso ideal para sua facha:</h1>
+                    <p id="PesoIdeal" class="tabela__infos"></p>
+                    </div>
+
+                    <div class="tabela__infos--caixas">
+                    <h1>Riscos:</h1>
+                    <p id="riscos" class="tabela__infos"></p>
+                    </div>
+
+                    <div class="tabela__infos--caixas">
+                    <h1>Recomencações:</h1>
+                    <p id="recomendacoes" class="tabela__infos"></p>
+                    <p id="recomendacoes1" class="tabela__infos"></p>
+                    <p id="recomendacoes2" class="tabela__infos"></p>
+                    <p id="recomendacoes3" class="tabela__infos"></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bloco" id="blocoImg">
+                <div id="imgPeso">
+                    <!-- JS IMPLEMENTO -->
+                </div>
+                <div id="imgPeso2">
+                    <!-- JS IMPLEMENTO -->
+                </div>
+                </div>
+
+            </div>
+        </form>
+    </main>
+    <!-- FOOTER -->
+    <footer>
+        <div class="itens">
+            <p id="creditos">© 2025 Criado por Bryan Nagano. Estrutura, estilo e script. Fins estudantis.</p>
+        </div>
+        <div class="itens">
+            <a href="https://github.com/bryan7777777" target="_blank"><i class="fa-brands fa-github"></i></a>
+        </div>
+    </footer>
+</body>
+
+</html>

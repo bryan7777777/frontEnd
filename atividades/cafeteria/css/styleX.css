@@ -1,0 +1,139 @@
+/* CORES DO SITE */
+:root{
+--corPrincipal:rgb(153, 36, 23);
+--corSegundaria:rgb(255, 240, 209);
+--button:rgb(255, 156, 45);
+--buttonHover:; 
+--corEscura:rgb(0, 0, 0);
+--corClara:rgb(255, 255, 255);
+--border:rgb(246, 206, 162);
+}
+
+img {
+    height: 400px;
+    width: 800px;
+}
+
+/* HEADER */
+.header{
+    height: 20vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: var(--corPrincipal);
+    color: var(--corSegundaria);
+}
+
+.sectionDoHeader{
+    display: flex;
+    flex-direction: row;
+}
+
+.icon i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 25px;
+    align-items: center;
+    font-size: 55px;
+}
+
+/* MAIN */
+
+/* BENEFICIOS */
+.articles{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 150px;
+    padding: 4%;
+    width: 100vw;
+}
+
+.section__icons{
+    background-color: var(--corClara);
+    border-radius: 25px;
+}
+
+.section__icons i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    padding: 25px;
+    align-items: center;
+    font-size: 75px;
+}
+
+.main__section--beneficios{
+    background-color: var(--corSegundaria);
+    color: var(--corPrincipal);
+    display: flex;
+    gap: 10px;
+    padding: 4%;
+    width: 100vw;
+    flex-direction: column;
+}
+
+.main__section--beneficios p{
+    color: var(--corEscura);
+}
+
+.main__section--beneficios h2{
+    font-size: 50px;
+}
+
+.main__section--article{
+    display: flex;
+    flex-direction: column;
+    padding: 25px;
+    gap: 15px;
+    width: 250px;
+}
+
+/* DEPOIMENTO */
+.main__section--depoimento{
+    background-color: var(--corEscura);
+}
+
+.main__section--depoimento h2{
+    color: var(--corClara);
+}
+
+.main__section--article2{
+    color: var(--corClara);
+}
+
+.main__section--img2 img{
+    display: flex;
+    height: 200px;
+    width: 200px;
+}
+
+/* MODELO DE NOGOCIOS */
+.main__section--article3{
+    background-color: var(--corPrincipal);
+    color: var(--corClara);
+    padding: 5px;
+}
+
+.main__section--bistro img{
+    height: 200px;
+    width: 400px;
+}
+
+.main__section--quiosque img{
+    height: 200px;
+    width: 400px;
+}
+
+/* FOOTER */
+.footer{
+    background-color: var(--corPrincipal);
+    color: var(--corSegundaria);
+}

@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jogo de Cartas</title>
+  <style>
+    body {
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      font-family: sans-serif;
+      text-align: center;
+      background: #111;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    #jogo {
+      margin-top: 20px;
+      width: 100%;
+      max-width: 100vw;
+      min-height: 100vh;
+      background-image: url(./img/background/imagem.png);
+      background-size: cover;
+      background-position: bottom;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      padding: 10px;
+    }
+
+    #battlefield {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 30px;
+      padding: 0 20px;
+    }
+
+    #player-area, .enemy {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    #player, .enemy img {
+      width: 100px;
+      transition: filter 0.4s ease;
+    }
+
+    #hud {
+      margin: 15px 0;
+    }
+
+    #cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0;
+    }
+
+    .card {
+      width: 130px;
+      height: 180px;
+      background: #222;
+      border-radius: 10px;
+      border: 3px solid #555;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.3s;
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 70%;
+      height: auto;
+      object-fit: cover;
+      border-bottom: 1px solid #000;
+      border-radius: 100%;
+      margin-top: 10px;
+      border: solid 2px gray;
+    }
+
+    .card .desc {
+      font-size: 14px;
+      padding: 6px;
+    }
+
+    .card:hover {
+      transform: scale(1.05);
+    }
+
+    .card-remove {
+      animation: fadeOut 0.3s ease forwards;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; transform: scale(0.5); }
+    }
+
+    .attack { background-color: #911; }
+    .defense { background-color: #116; }
+    .heal { background-color: #1f1; }
+
+    .common { border-color: rgb(255, 255, 255); }
+    .rare { border-color: rgb(13, 0, 255); }
+    .epic { border-color: rgb(140, 0, 255); }
+
+    #log {
+      margin: 10px;
+      height: 60px;
+      overflow-y: auto;
+      font-size: 14px;
+    }
+
+    @keyframes glow-blue {
+      0%, 100% { box-shadow: 0 0 0px #00f; }
+      50% { box-shadow: 0 0 15px #00f; }
+    }
+
+    @keyframes glow-green {
+      0%, 100% { box-shadow: 0 0 0px #0f0; }
+      50% { box-shadow: 0 0 15px #0f0; }
+    }
+
+    .glow-blue { animation: glow-blue 1s ease; }
+    .glow-green { animation: glow-green 1s ease; }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      75% { transform: translateX(5px); }
+    }
+
+    .shake { animation: shake 0.3s; }
+    .damaged { filter: brightness(1.5) sepia(1) hue-rotate(-30deg); }
+
+    .float-text {
+      position: absolute;
+      font-size: 20px;
+      font-weight: bold;
+      animation: floatUp 1s ease forwards;
+      pointer-events: none;
+    }
+
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div id="jogo">
+    <div id="battlefield">
+      <div id="enemies"></div>
+      <div id="player-area">
+        <img id="player" src="./img/player/Robô Mecha Pixelizado (1).png" alt="Jogador">
+      </div>
+    </div>
+
+    <div id="hud">
+      <p>HP: <span id="hp">30</span> | Energia: <span id="energy">5</span></p>
+      <button onclick="enemyTurn()">Pular Turno</button>
+    </div>
+
+    <div id="cards"></div>
+    <div id="log"></div>
+  </div>
+
+  <script>
+    let playerHP = 30, energy = 5;
+    const deck = [];
+    const allCards = [
+      {
+        name: "Ataque",
+        cost: 1,
+        basePower: 5,
+        rarity: "common",
+        img: "./img/cards/atk/LancaGranadas.png",
+        desc: "Causa 5 de dano ao inimigo."
+      },
+      {
+        name: "Defesa",
+        cost: 1,
+        basePower: 3,
+        rarity: "common",
+        img: "./img/cards/def/Blindagem.png",
+        desc: "Ganha 3 de defesa temporária."
+      },
+      {
+        name: "Cura",
+        cost: 2,
+        basePower: 5,
+        rarity: "rare",
+        img: "./img/cards/buff/Cura.png",
+        desc: "Recupera 5 de HP."
+      },
+      {
+        name: "Explosão",
+        cost: 3,
+        basePower: 4,
+        rarity: "epic",
+        img: "./img/cards/atk/ExplosaoDeEnergia.png",
+        desc: "Causa dano em área a todos os inimigos."
+      },
+      {
+        name: "Escudo",
+        cost: 1,
+        basePower: 4,
+        rarity: "rare",
+        img: "./img/cards/def/Blindagem.png",
+        desc: "Cria um escudo de 4 pontos."
+      },
+      {
+        name: "Golpe Duplo",
+        cost: 2,
+        basePower: 4,
+        rarity: "epic",
+        img: "./img/cards/atk/tiroCarregado.png",
+        desc: "Ataca duas vezes com 4 de dano cada."
+      }
+    ];
+
+    const enemies = [
+      {
+        name: "Goblin",
+        hp: 15,
+        behavior: () => [{ type: "attack", value: 3 }],
+        el: createEnemy("./img/inimigos/minion.png")
+      }
+    ];
+
+    function createEnemy(imgSrc) {
+      const div = document.createElement("div");
+      div.className = "enemy";
+      div.innerHTML = `<img src="${imgSrc}" alt="Inimigo">`;
+      document.getElementById("enemies").appendChild(div);
+      return div;
+    }
+
+    function updateHUD() {
+      document.getElementById("hp").textContent = playerHP;
+      document.getElementById("energy").textContent = energy;
+    }
+
+    function floatText(target, text, color) {
+      const el = document.createElement("div");
+      el.className = "float-text";
+      el.textContent = text;
+      el.style.color = color;
+      el.style.left = (window.innerWidth / 2 - 30) + "px";
+      el.style.top = "40%";
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 1000);
+    }
+
+    function glowPlayer(color) {
+      const p = document.getElementById("player");
+      p.classList.remove("glow-blue", "glow-green");
+      if (color === "blue") p.classList.add("glow-blue");
+      if (color === "green") p.classList.add("glow-green");
+      setTimeout(() => p.classList.remove("glow-blue", "glow-green"), 1000);
+    }
+
+    function animateDamage(el) {
+      el.classList.add("shake", "damaged");
+      setTimeout(() => el.classList.remove("shake", "damaged"), 400);
+    }
+
+    function drawCards() {
+      const cards = document.getElementById("cards");
+      cards.innerHTML = "";
+      deck.forEach((card, i) => {
+        const div = document.createElement("div");
+        let tipo = card.name === "Ataque" || card.name === "Explosão" || card.name === "Golpe Duplo" ? "attack" :
+                   card.name === "Defesa" || card.name === "Escudo" ? "defense" :
+                   card.name === "Cura" ? "heal" : "";
+        div.className = `card ${card.rarity} ${tipo}`;
+        div.innerHTML = `
+          <img src="${card.img}" alt="${card.name}">
+          <div class="desc"><strong>${card.name}</strong> (${card.cost})<br><em>${card.desc}</em></div>
+        `;
+        div.onclick = () => {
+          if (energy < card.cost || playerHP <= 0 || enemies.length === 0) return;
+          energy -= card.cost;
+
+          if (card.name === "Ataque") {
+            animateDamage(enemies[0].el);
+            enemies[0].hp -= card.power;
+            floatText(enemies[0].el, `-${card.power}`, "red");
+            log("Usou Ataque!");
+          } else if (card.name === "Defesa") {
+            playerHP += card.power;
+            glowPlayer("blue");
+            floatText(document.body, `+${card.power}`, "blue");
+            log("Usou Defesa!");
+          } else if (card.name === "Cura") {
+            playerHP += card.power;
+            glowPlayer("green");
+            floatText(document.body, `+${card.power}`, "lime");
+            log("Usou Cura!");
+          } else if (card.name === "Explosão") {
+            enemies.forEach(e => {
+              animateDamage(e.el);
+              e.hp -= card.power;
+              floatText(e.el, `-${card.power}`, "red");
+            });
+            log("Usou Explosão!");
+          } else if (card.name === "Escudo") {
+            playerHP += card.power;
+            glowPlayer("blue");
+            floatText(document.body, `+${card.power}`, "cyan");
+            log("Usou Escudo!");
+          } else if (card.name === "Golpe Duplo") {
+            animateDamage(enemies[0].el);
+            enemies[0].hp -= card.power * 2;
+            floatText(enemies[0].el, `-${card.power * 2}`, "red");
+            log("Usou Golpe Duplo!");
+          }
+
+          div.classList.add("card-remove");
+          setTimeout(() => {
+            deck.splice(i, 1);
+            drawCards();
+            checkEnemies();
+          }, 300);
+          updateHUD();
+          if (energy === 0) enemyTurn();
+        };
+        cards.appendChild(div);
+      });
+    }
+
+    function drawNewCards() {
+      for (let i = 0; i < 5 && deck.length < 10; i++) {
+        const base = { ...allCards[Math.floor(Math.random() * allCards.length)] };
+        const bonus = base.rarity === 'rare' ? 1 : base.rarity === 'epic' ? 2 : 0;
+        deck.push({ ...base, power: base.basePower + bonus });
+      }
+    }
+
+    function enemyTurn() {
+      setTimeout(() => {
+        enemies.forEach(e => {
+          const actions = e.behavior();
+          actions.forEach(act => {
+            if (act.type === "attack") {
+              playerHP -= act.value;
+              animateDamage(document.getElementById("player"));
+              floatText(document.body, `-${act.value}`, "orange");
+              log(`${e.name} atacou!`);
+            }
+          });
+        });
+        energy = 5;
+        drawNewCards();
+        drawCards();
+        updateHUD();
+        checkGameOver();
+      }, 600);
+    }
+
+    function checkEnemies() {
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        if (enemies[i].hp <= 0) {
+          log(`${enemies[i].name} foi derrotado!`);
+          enemies[i].el.remove();
+          enemies.splice(i, 1);
+        }
+      }
+    }
+
+    function checkGameOver() {
+      if (playerHP <= 0) {
+        log("Você perdeu!");
+        document.getElementById("cards").innerHTML = "";
+      }
+    }
+
+    function log(txt) {
+      const el = document.createElement("div");
+      el.textContent = txt;
+      document.getElementById("log").prepend(el);
+    }
+
+    drawNewCards();
+    drawCards();
+    updateHUD();
+  </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gaia Protocol</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+ 
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(to bottom, #1a1a1a, #2e2e2e);
+      color: #d0d0d0;
+      height: 100vh;
+      overflow: hidden;
+    }
+ 
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+ 
+    .screen.active {
+      display: flex;
+    }
+ 
+    .start-screen h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+      color: #c9ffc7;
+    }
+ 
+    .start-screen button {
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #3d5338;
+      color: #c9ffc7;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+ 
+    .start-screen button:hover {
+      background-color: #5b7e50;
+    }
+ 
+    .map-screen {
+      background-color: #131a13;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+ 
+    .map {
+      width: 80vw;
+      height: 80vh;
+      background-color: #1e2d1e;
+      border: 2px solid #4a5f4a;
+      position: relative;
+    }
+ 
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+    }
+ 
+    .node {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background-color: #c9ffc7;
+      border: 2px solid #5a7a5a;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 2;
+    }
+ 
+    .node:hover {
+      background-color: #9feaa2;
+    }
+ 
+    .tooltip {
+      position: absolute;
+      background-color: #222;
+      color: #c9ffc7;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+ 
+    .mission-panel {
+      position: absolute;
+      bottom: 20px;
+      background-color: #101810;
+      border: 2px solid #4a5f4a;
+      padding: 16px;
+      border-radius: 8px;
+      z-index: 5;
+      color: #c9ffc7;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      min-width: 260px;
+    }
+ 
+    .mission-panel h2 {
+      font-size: 1.2rem;
+    }
+ 
+    .mission-panel button {
+      padding: 6px 12px;
+      background-color: #3d5338;
+      border: none;
+      color: #c9ffc7;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+ 
+    .mission-panel button:hover {
+      background-color: #5b7e50;
+    }
+  </style>
+</head>
+<body>
+ 
+  <!-- TELA INICIAL -->
+  <div id="startScreen" class="screen start-screen active">
+    <h1>Gaia Protocol</h1>
+    <button onclick="startGame()">Iniciar Missão</button>
+  </div>
+ 
+  <!-- TELA DO MAPA -->
+  <div id="mapScreen" class="screen map-screen">
+    <div class="map" id="mapContainer">
+      <canvas id="mapCanvas" width="1000" height="800"></canvas>
+      <div class="tooltip" id="tooltip"></div>
+    </div>
+    <div class="mission-panel" id="missionPanel">
+      <h2 id="missionTitle">Missão</h2>
+      <p id="missionDescription">Descrição da missão.</p>
+      <div style="display: flex; gap: 10px;">
+        <a href="./batalha.html"><button onclick="startMission()">Iniciar</button></a>
+        <button onclick="closeMission()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+ 
+  <script>
+    function startGame() {
+      document.getElementById('startScreen').classList.remove('active');
+      document.getElementById('mapScreen').classList.add('active');
+    }
+ 
+    const map = document.getElementById("mapContainer");
+    const canvas = document.getElementById("mapCanvas");
+    const ctx = canvas.getContext("2d");
+    const tooltip = document.getElementById("tooltip");
+    const missionPanel = document.getElementById("missionPanel");
+    const missionTitle = document.getElementById("missionTitle");
+    const missionDescription = document.getElementById("missionDescription");
+ 
+    const nodes = [
+      { x: 80, y: 100, label: "Ruínas Industriais", desc: "Restaure uma antiga fábrica e colete ferro enferrujado." },
+      { x: 220, y: 150, label: "Reserva Genética", desc: "Defenda a reserva e recupere amostras de DNA puro." },
+      { x: 380, y: 110, label: "Laboratório Submerso", desc: "Acesse arquivos antigos e recupere água potável." },
+      { x: 550, y: 180, label: "Estação Solar Desativada", desc: "Reative painéis solares e capture energia Xenoflux." },
+      { x: 720, y: 120, label: "Refúgio Esquecido", desc: "Explorar vestígios humanos e recuperar madeira tratada." }
+    ];
+ 
+    const connections = [
+      [0, 1],
+      [1, 2],
+      [2, 3],
+      [3, 4]
+    ];
+ 
+    function drawConnections() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.strokeStyle = "#6a8f6a";
+      ctx.lineWidth = 2;
+      connections.forEach(([from, to]) => {
+        const a = nodes[from];
+        const b = nodes[to];
+        ctx.beginPath();
+        ctx.moveTo(a.x + 20, a.y + 20); // center of node
+        ctx.lineTo(b.x + 20, b.y + 20);
+        ctx.stroke();
+      });
+    }
+ 
+    function createNodes() {
+      nodes.forEach((node, index) => {
+        const el = document.createElement("div");
+        el.classList.add("node");
+        el.style.left = `${node.x}px`;
+        el.style.top = `${node.y}px`;
+ 
+        el.addEventListener("mousemove", (e) => {
+          tooltip.textContent = node.label;
+          tooltip.style.left = `${e.pageX + 10}px`;
+          tooltip.style.top = `${e.pageY + 10}px`;
+          tooltip.style.opacity = 1;
+        });
+ 
+        el.addEventListener("mouseleave", () => {
+          tooltip.style.opacity = 0;
+        });
+ 
+        el.addEventListener("click", () => {
+          openMission(node);
+        });
+ 
+        map.appendChild(el);
+      });
+    }
+ 
+    function openMission(node) {
+      missionTitle.textContent = node.label;
+      missionDescription.textContent = node.desc;
+      missionPanel.style.display = "flex";
+    }
+ 
+    function closeMission() {
+      missionPanel.style.display = "none";
+    }
+ 
+    function startMission() {
+      alert("Missão iniciada!");
+      missionPanel.style.display = "none";
+      // Aqui você pode redirecionar ou carregar a fase real
+    }
+ 
+    // Inicializar mapa
+    createNodes();
+    drawConnections();
+  </script>
+</body>
+</html>
+ 

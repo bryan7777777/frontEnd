@@ -1,0 +1,50 @@
+#form {
+    display: flex;
+    flex-direction: column;
+    width: 30vw;
+    background-color: rgb(183, 255, 255);
+    border: solid 5px rgb(101, 236, 225);
+    border-radius: 1%;
+    padding: 5%;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+.form__Elements{
+    width: 60%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.form__textBox input, #nomeAluno, .form__textBox{
+    font-size: 20px;
+    background-color: rgb(187, 255, 232);
+    color: rgb(170, 0, 0);
+    border-radius: 5px;
+}
+
+.form__button{
+    color: white;
+    background-color: rgb(231, 114, 114);
+    border-radius: 5px;
+    padding: 8px 5px;
+}
+
+.form__button:hover{
+    background-color: rgb(145, 235, 153);
+}
+
+#resulBox{
+    display: flex;
+    flex-direction: column;
+}
+
+.resultBoxText{
+    text-align: center;
+    font-size: 130%;
+    color: blueviolet;
+}

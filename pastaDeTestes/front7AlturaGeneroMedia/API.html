@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de CEP</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <style>
+        body {
+            background-color: black;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: rgb(253, 121, 121);
+            width: 25vw;
+            height: 50vh;
+            margin-top: 20vh;
+            box-shadow: 0px 0px 30px 0px rgb(253, 121, 121);
+            transition: 0.7s;
+            color: rgb(134, 20, 20);
+            gap: 50px;
+        }
+
+        .container:hover {
+            background-color: rgb(121, 178, 253);
+            box-shadow: 0px 0px 50px 0px rgb(121, 178, 253);
+            color: rgb(22, 70, 134);
+            width: 27vw;
+            height: 52vh;
+            border-radius: 25px;
+        }
+
+        #resultado {
+            width: 80%;
+            padding: 20px;
+            background-color: aliceblue;
+            border-radius: 25px;
+            min-height: 30%;
+        }
+    </style>
+
+    <div class="container">
+        <h1>Consulta de CEP</h1>
+        <form id="cepForm">
+            <label for="cep">Digite o CEP:</label>
+            <input type="text" id="cep" name="cep" maxlength="8" minlength="8" required>
+            <button type="submit">Buscar</button>
+        </form>
+        <div id="resultado"></div>
+    <script>
+        document.getElementById("cepForm").addEventListener("submit", function (event) {
+            // document.getElementById('cepForm'): procura no HTML um elemento com o ID cepForm (nosso formulário).
+            // .addEventListener('submit', ...): diz ao navegador: “Quando o formulário for enviado, execute esta função”.
+            // function(event): é a função que será executada quando o formulário for enviado. O event é um objeto que contém informações sobre o que aconteceu.
+
+            event.preventDefault(); // Evita que a página recarregue
+            // Isso impede que a página recarregue quando o formulário for enviado. Normalmente, o navegador recarrega a página, mas aqui queremos evitar isso para fazer tudo com JavaScript.
+
+            const cep = document.getElementById("cep").value; // Pega o valor digitado no campo de texto com ID cep e guarda na variável cep.
+            // const é uma forma de criar uma variável que não muda depois.
+
+            if (!/^\d{8}$/.test(cep)) { //Uso de REGEX Regular Expression para validar CEP
+                //^\d{8}$//(Garantir que sejam dígitos numéricos)
+                alert("Por favor, digite um CEP válido com 8 dígitos.");
+                return;
+            }
+
+            fetch(`https://viacep.com.br/ws/${cep}/json/`)
+                // fetch é uma função que faz uma requisição (pedido) para a internet.
+                // Aqui, estamos pedindo os dados do CEP para o site do ViaCEP.
+                // O ${cep} insere o valor digitado dentro do link.
+                .then(response => response.json()) 
+                // Quando a resposta da internet chegar, transformamos ela em formato JSON (um tipo de texto que o JavaScript entende como objeto).
+                .then(data => {
+                // Agora temos os dados do endereço dentro da variável data.
+                if (data.erro) {
+                    document.getElementById("resultado").innerHTML = "CEP inválido.";
+                } else {
+                    document.getElementById("resultado").innerHTML = `
+                    cep: ${data.cep}, <br>
+                    logradouro: ${data.logradouro}, <br>
+                    complemento: ${data.complemento}, <br>
+                    unidade: ${data.unidade}, <br>
+                    bairro: ${data.bairro}, <br>
+                    localidade: ${data.localidade}, <br>
+                    uf: ${data.uf}, <br>
+                    estado: ${data.estado}, <br>
+                    regiao: ${data.regiao}, <br>
+                    `
+                }
+                })
+                .catch(error => {
+                // Se acontecer algum erro (como falta de internet), mostramos uma mensagem de erro no console e na tela.
+                console.error("Erro ao buscar o CEP:", error);
+                document.getElementById("resultado").innerHTML = "Erro ao buscar o CEP.";
+                })
+        })
+    </script>
+</body>
+
+</html>

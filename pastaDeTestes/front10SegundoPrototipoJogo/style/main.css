@@ -1,0 +1,10 @@
+body{
+    width: 100vw;
+    height: 100Vh;
+}
+
+canvas{
+    width: 700px;
+    height: auto;
+    background-image: url(../img/background/imagem.png);
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>JavaScript Arrays</h1>
+<h2>Nested JavaScript Objects and Arrays.</h2>
+
+<p id="demo"></p>
+
+<script>
+//[] [dentro disso, temos objetos] 
+//[carro1, carro2 e carro3]
+
+//{} {dentro disso, temos objotos ou arrays}
+//{nome: "Ford", models: ["Fiesta", "Focus", "Mustang"]}
+
+//elemento definido que sera enviado para o id:demo
+let x = "";
+
+// myObj é um obj criado e dentro dele tem 3 infos do usuario, nome, idade e carros, os carros são um obj com varias infos dentro
+const myObj = {
+  name: "John",
+  age: 30,
+  cars: [
+    {name:"Ford", models:["Fiesta", "Focus", "Mustang"]},
+    {name:"BMW", models:["320", "X3", "X5"]},
+    {name:"Fiat", models:["500", "Panda"]},
+    {name:'augustinho cars:', models:['taxi velho', "fusca do vizinho"]}
+  ]
+}
+
+x = '<h2>nome:</h2>' + myObj.name + '<h2>idade:</h2>' + myObj.age;
+
+for (let i in myObj.cars) {
+  x += "<h2>" + myObj.cars[i].name + "</h2>";
+  for (let j in myObj.cars[i].models) {
+    x += myObj.cars[i].models[j] + "<br>";
+  }
+}
+
+document.getElementById("demo").innerHTML = x;
+document.getElementById("demo").innerHTML = x;
+
+</script>
+
+</body>
+</html>

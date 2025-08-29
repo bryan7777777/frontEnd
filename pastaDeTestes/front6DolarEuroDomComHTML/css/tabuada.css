@@ -1,0 +1,78 @@
+body{
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+h2 {
+    color: rgb(0, 25, 80);
+}
+
+table {
+    border-collapse: collapse;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding-top: 5%;
+    padding-bottom: 3%;
+}
+
+th {
+    border: solid 1px rgb(0, 25, 80);
+    padding: 5px 50px 5px 50px;
+    background-color: rgb(198, 239, 255);
+    color: rgb(0, 25, 80);
+    width: 50px;
+}
+
+#tabuada {
+    text-align: center;
+    background-color: rgb(124, 214, 255);
+    padding: 0px 20px 20px 20px;
+    border-radius: 25px;
+    border: solid 2px rgb(0, 25, 80);
+}
+
+button{
+    margin-bottom: 50px;
+}
+
+        /* FORM */
+#tabuadaForm{
+    display: flex;
+    flex-direction: column;
+    border-collapse: collapse;
+    gap: 20px;
+}
+
+.form__element{
+    border: solid 2px rgb(0, 25, 80);
+    padding: 8px;
+}
+
+.form__textBox{
+    background-color: rgb(198, 239, 255);
+}
+
+.form__textBox:hover{
+    background-color: rgb(167, 255, 177);
+}
+
+#buttonCalcular{
+    width: 40%;
+    height: 40px;
+    font-size: 120%;
+    color: rgb(0, 25, 80);
+}
+
+#buttonCalcular:hover{
+    color: rgb(26, 134, 44);
+}
+
+#bloco{
+    display: flex;
+}
