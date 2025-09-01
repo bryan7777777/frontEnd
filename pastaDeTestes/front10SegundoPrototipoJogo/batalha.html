@@ -19,6 +19,14 @@
       min-height: 100vh;
     }
 
+    #playerBarra{
+      height: 100px;
+      width: 100%;
+      background-color: #292929;
+      margin-top: -100px;
+      margin-bottom: 100px;
+    }
+
     #finalTurno{
       width: 150%;
       height: 40px;
@@ -28,7 +36,7 @@
       margin-top: 20px;
       width: 100%;
       max-width: 100vw;
-      min-height: 100vh;
+      min-height: 77vh;
       background-image: url(./img/background/imagem.png);
       background-size: cover;
       background-position: bottom;
@@ -179,10 +187,18 @@
     }
 
     #log {
+      width: 140px;
       margin: 10px;
-      height: 60px;
+      height: 80px;
       overflow-y: auto;
       font-size: 14px;
+      background-color: rgba(0, 162, 255, 0.4);
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      border: solid 1px rgba(2, 0, 102, 0.4);
+      color: rgba(2, 0, 102);
+      box-shadow: 0 0 30px rgba(0, 162, 255);
     }
 
     @keyframes glow-blue {
@@ -264,7 +280,9 @@
 </head>
 
 <body>
+  <header id="playerBarra"></header>
   <div id="jogo">
+    <div id="log"></div>
     <div id="battlefield">
       <div id="player-area">
         <img id="player" src="./img/player/Robô Mecha Pixelizado (1).png" alt="Jogador">
@@ -278,7 +296,6 @@
     </div>
 
     <div id="cards"></div>
-    <div id="log"></div>
   </div>
 
   <script>
@@ -294,20 +311,12 @@
         desc: "Causa 5 de dano ao inimigo."
       },
       {
-        name: "Defesa",
-        cost: 1,
-        basePower: 3,
-        rarity: "common",
-        img: "./img/cards/def/Blindagem.png",
-        desc: "Ganha 3 de defesa temporária."
-      },
-      {
-        name: "Cura",
+        name: "Golpe Duplo",
         cost: 2,
-        basePower: 5,
-        rarity: "rare",
-        img: "./img/cards/buff/Cura.png",
-        desc: "Recupera 5 de HP."
+        basePower: 4,
+        rarity: "epic",
+        img: "./img/cards/atk/tiroCarregado.png",
+        desc: "Ataca duas vezes com 4 de dano cada."
       },
       {
         name: "Explosão",
@@ -318,27 +327,35 @@
         desc: "Causa dano em área a todos os inimigos."
       },
       {
+        name: "Defesa",
+        cost: 1,
+        basePower: 3,
+        rarity: "common",
+        img: "./img/cards/def/Blindagem.png",
+        desc: "Ganha 3 de defesa temporária."
+      },
+      {
         name: "Escudo",
         cost: 1,
         basePower: 4,
         rarity: "rare",
-        img: "./img/cards/def/Blindagem.png",
+        img: "./img/cards/def/escudoHolo.png",
         desc: "Cria um escudo de 4 pontos."
       },
       {
-        name: "Golpe Duplo",
+        name: "Cura",
         cost: 2,
-        basePower: 4,
-        rarity: "epic",
-        img: "./img/cards/atk/tiroCarregado.png",
-        desc: "Ataca duas vezes com 4 de dano cada."
+        basePower: 5,
+        rarity: "rare",
+        img: "./img/cards/buff/Cura.png",
+        desc: "Recupera 5 de HP."
       }
     ];
 
     const enemies = [
       {
         name: "Tartaruga",
-        hp: 15,
+        hp: 25,
         behavior: () => [{ type: "attack", value: 5 }],
         el: createEnemy("./img/inimigos/minion.png")
       }
