@@ -19,6 +19,11 @@
       min-height: 100vh;
     }
 
+    #finalTurno{
+      width: 150%;
+      height: 40px;
+    }
+
     #jogo {
       margin-top: 20px;
       width: 100%;
@@ -64,14 +69,31 @@
 
     #hud {
       margin: 15px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      flex-direction: column;
+    }
+
+    #hp{
+      color: rgb(146, 14, 31);
+    }
+
+    #energy{
+      color: rgb(0, 46, 133);
     }
 
     #cards {
+      width: 100%;
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
       gap: 10px;
       margin: 10px 0;
+      margin-bottom: -100px;
+      background-color: #292929;
+      padding: 30px;
     }
 
     .desc{
@@ -251,8 +273,8 @@
     </div>
 
     <div id="hud">
-      <p>HP: <span id="hp">30</span> | Energia: <span id="energy">5</span></p>
-      <button onclick="enemyTurn()">Pular Turno</button>
+      <p>❤️ <strong><span id="hp">30</span></strong> | 🔷 <strong><span id="energy">3</span></strong></p>
+      <button onclick="enemyTurn()" id="finalTurno">FINALIZAR TURNO</button>
     </div>
 
     <div id="cards"></div>
@@ -260,7 +282,7 @@
   </div>
 
   <script>
-    let playerHP = 30, energy = 5;
+    let playerHP = 30, energy = 3;
     const deck = [];
     const allCards = [
       {
@@ -315,9 +337,9 @@
 
     const enemies = [
       {
-        name: "Goblin",
+        name: "Tartaruga",
         hp: 15,
-        behavior: () => [{ type: "attack", value: 3 }],
+        behavior: () => [{ type: "attack", value: 5 }],
         el: createEnemy("./img/inimigos/minion.png")
       }
     ];
@@ -444,7 +466,7 @@
             }
           });
         });
-        energy = 5;
+        energy = 3;
         drawNewCards();
         drawCards();
         updateHUD();
