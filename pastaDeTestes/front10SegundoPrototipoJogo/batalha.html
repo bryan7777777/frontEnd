@@ -30,14 +30,18 @@
       background-repeat: no-repeat;
       background-attachment: fixed;
       padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      flex-direction: column;
     }
 
     #battlefield {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-top: 30px;
-      padding: 0 20px;
+      gap: 600px;
+      margin-bottom: -25px;
     }
 
     #player-area,
@@ -45,6 +49,11 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .enemy {
+      transform: scaleX(-1);
+      margin-bottom: 9.5px;
     }
 
     #player,
@@ -72,8 +81,8 @@
     }
 
     .card {
-      width: 210px;
-      height: 260px;
+      width: 155px;
+      height: 227px;
       border-radius: 10px;
       display: flex;
       flex-direction: column;
@@ -115,36 +124,36 @@
     }
 
     .attack {
-      background-image: url("img/cards/cardVermelho.png");
+      background-image: url("img/cards/vermelho.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
     }
 
     .defense {
-      background-image: url("img/cards/cartaAzul.png");
+      background-image: url("img/cards/azul.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
     }
 
     .heal {
-      background-image: url("img/cards/cardVerd.png");
+      background-image: url("img/cards/verd.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
     }
 
     .common {
-      box-shadow: 0 0 20px rgb(255, 255, 255);
+      box-shadow: 0 0 30px rgb(168, 168, 168);
     }
 
     .rare {
-      box-shadow: 0 0 20px rgb(0, 204, 255);
+      box-shadow: 0 0 30px rgb(0, 110, 255);
     }
 
     .epic {
-      box-shadow: 0 0 20px rgb(140, 0, 255);
+      box-shadow: 0 0 30px rgb(140, 0, 255);
     }
 
     #log {
@@ -235,10 +244,10 @@
 <body>
   <div id="jogo">
     <div id="battlefield">
-      <div id="enemies"></div>
       <div id="player-area">
         <img id="player" src="./img/player/Robô Mecha Pixelizado (1).png" alt="Jogador">
       </div>
+      <div id="enemies"></div>
     </div>
 
     <div id="hud">
