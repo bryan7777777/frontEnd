@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jogo de Cartas</title>
   <style>
     body {
@@ -39,13 +40,15 @@
       padding: 0 20px;
     }
 
-    #player-area, .enemy {
+    #player-area,
+    .enemy {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    #player, .enemy img {
+    #player,
+    .enemy img {
       width: 100px;
       transition: filter 0.4s ease;
     }
@@ -62,29 +65,33 @@
       margin: 10px 0;
     }
 
+    .desc{
+      margin-top: 10px;
+      text-align: center;
+      width: 80%;
+    }
+
     .card {
-      width: 130px;
-      height: 180px;
-      background: #222;
+      width: 210px;
+      height: 260px;
       border-radius: 10px;
-      border: 3px solid #555;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: space-between;
       cursor: pointer;
       transition: transform 0.2s, opacity 0.3s;
       overflow: hidden;
     }
 
     .card img {
-      width: 70%;
+      width: 55%;
       height: auto;
       object-fit: cover;
-      border-bottom: 1px solid #000;
+      border-bottom: 1px solid #292929;
       border-radius: 100%;
-      margin-top: 10px;
-      border: solid 2px gray;
+      margin-top: 25px;
+      border: solid 2px rgb(32, 32, 32);
+      box-shadow: 0 0 10px #292929;
     }
 
     .card .desc {
@@ -101,16 +108,44 @@
     }
 
     @keyframes fadeOut {
-      to { opacity: 0; transform: scale(0.5); }
+      to {
+        opacity: 0;
+        transform: scale(0.5);
+      }
     }
 
-    .attack { background-color: #911; }
-    .defense { background-color: #116; }
-    .heal { background-color: #1f1; }
+    .attack {
+      background-image: url("img/cards/cardVermelho.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
 
-    .common { border-color: rgb(255, 255, 255); }
-    .rare { border-color: rgb(13, 0, 255); }
-    .epic { border-color: rgb(140, 0, 255); }
+    .defense {
+      background-image: url("img/cards/cartaAzul.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .heal {
+      background-image: url("img/cards/cardVerd.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .common {
+      box-shadow: 0 0 20px rgb(255, 255, 255);
+    }
+
+    .rare {
+      box-shadow: 0 0 20px rgb(0, 204, 255);
+    }
+
+    .epic {
+      box-shadow: 0 0 20px rgb(140, 0, 255);
+    }
 
     #log {
       margin: 10px;
@@ -120,26 +155,60 @@
     }
 
     @keyframes glow-blue {
-      0%, 100% { box-shadow: 0 0 0px #00f; }
-      50% { box-shadow: 0 0 15px #00f; }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0px #00f;
+      }
+
+      50% {
+        box-shadow: 0 0 15px #00f;
+      }
     }
 
     @keyframes glow-green {
-      0%, 100% { box-shadow: 0 0 0px #0f0; }
-      50% { box-shadow: 0 0 15px #0f0; }
+
+      0%,
+      100% {
+        box-shadow: 0 0 0px #0f0;
+      }
+
+      50% {
+        box-shadow: 0 0 15px #0f0;
+      }
     }
 
-    .glow-blue { animation: glow-blue 1s ease; }
-    .glow-green { animation: glow-green 1s ease; }
+    .glow-blue {
+      animation: glow-blue 1s ease;
+    }
+
+    .glow-green {
+      animation: glow-green 1s ease;
+    }
 
     @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
+
+      0%,
+      100% {
+        transform: translateX(0);
+      }
+
+      25% {
+        transform: translateX(-5px);
+      }
+
+      75% {
+        transform: translateX(5px);
+      }
     }
 
-    .shake { animation: shake 0.3s; }
-    .damaged { filter: brightness(1.5) sepia(1) hue-rotate(-30deg); }
+    .shake {
+      animation: shake 0.3s;
+    }
+
+    .damaged {
+      filter: brightness(1.5) sepia(1) hue-rotate(-30deg);
+    }
 
     .float-text {
       position: absolute;
@@ -150,11 +219,19 @@
     }
 
     @keyframes floatUp {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-50px); opacity: 0; }
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
     }
   </style>
 </head>
+
 <body>
   <div id="jogo">
     <div id="battlefield">
@@ -279,8 +356,8 @@
       deck.forEach((card, i) => {
         const div = document.createElement("div");
         let tipo = card.name === "Ataque" || card.name === "Explosão" || card.name === "Golpe Duplo" ? "attack" :
-                   card.name === "Defesa" || card.name === "Escudo" ? "defense" :
-                   card.name === "Cura" ? "heal" : "";
+          card.name === "Defesa" || card.name === "Escudo" ? "defense" :
+            card.name === "Cura" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
         div.innerHTML = `
           <img src="${card.img}" alt="${card.name}">
@@ -394,4 +471,5 @@
     updateHUD();
   </script>
 </body>
+
 </html>
