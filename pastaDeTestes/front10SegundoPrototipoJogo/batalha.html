@@ -110,6 +110,15 @@
       width: 85%;
     }
 
+    .energia{
+      color: rgb(0, 46, 133);
+      width: 76%;
+      margin-top: -98px;
+      margin-bottom: 72px;
+      text-align: left;
+      border-radius: 100%;
+    }
+
     .card {
       width: 155px;
       height: 227px;
@@ -311,7 +320,7 @@
         basePower: 20,
         rarity: "epic",
         img: "./img/cards/atk/Impacto.png",
-        desc: "Causa 22 de dano ao inimigo."
+        desc: "Causa 20 de dano ao inimigo."
       },
       {
         name: "Ataque",
@@ -322,20 +331,20 @@
         desc: "Causa 5 de dano ao inimigo."
       },
       {
-        name: "Rajada Tripla",
+        name: "Rajada Dupla",
         cost: 2,
         basePower: 4,
-        rarity: "epic",
+        rarity: "rare",
         img: "./img/cards/atk/tiroCarregado.png",
-        desc: "Ataca três vezes com 4 de dano cada."
+        desc: "Ataca 2 vezes com 4 de dano cada."
       },
       {
         name: "Explosão",
-        cost: 3,
-        basePower: 4,
-        rarity: "epic",
+        cost: 1,
+        basePower: 3,
+        rarity: "common",
         img: "./img/cards/atk/ExplosaoDeEnergia.png",
-        desc: "Causa dano em área a todos os inimigos."
+        desc: "Causa 3 de dano em área a todos os inimigos."
       },
       {
         name: "Defesa",
@@ -348,10 +357,10 @@
       {
         name: "Escudo",
         cost: 1,
-        basePower: 4,
-        rarity: "rare",
+        basePower: 7,
+        rarity: "common",
         img: "./img/cards/def/escudoHolo.png",
-        desc: "Cria um escudo de 5 pontos."
+        desc: "Cria um escudo de 7 pontos."
       },
       {
         name: "Sistema de reflexão",
@@ -383,7 +392,7 @@
         basePower: 6,
         rarity: "rare",
         img: "./img/cards/buff/sobreCarga.png",
-        desc: "Perca 7 de vida e cause 14 de dano."
+        desc: "Perca 6 de vida e cause 12 de dano."
       }
     ];
 
@@ -438,13 +447,14 @@
       cards.innerHTML = "";
       deck.forEach((card, i) => {
         const div = document.createElement("div");
-        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Rajada Tripla" ? "attack" :
+        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Rajada Dupla" ? "attack" :
           card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Escudo" ? "defense" :
             card.name === "Cura" || card.name === "Golpe Neural Retaliante" || card.name === "Sobre Carga" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
         div.innerHTML = `
           <img src="${card.img}" alt="${card.name}">
-          <div class="desc"><strong>${card.name}</strong> (${card.cost})<br><em>${card.desc}</em></div>
+          <div class="energia"><strong>${card.cost}</strong></div>
+          <div class="desc"><strong>${card.name}</strong><br><em>${card.desc}</em></div>
         `;
         div.onclick = () => {
           if (energy < card.cost || playerHP <= 0 || enemies.length === 0) return;
@@ -477,11 +487,11 @@
             glowPlayer("blue");
             floatText(document.body, `+${card.power}`, "cyan");
             log("Usou Escudo!");
-          } else if (card.name === "Rajada Tripla") {
+          } else if (card.name === "Rajada Dupla") {
             animateDamage(enemies[0].el);
             enemies[0].hp -= card.power * 2;
             floatText(enemies[0].el, `-${card.power * 2}`, "red");
-            log("Usou Rajada Tripla!");
+            log("Usou Rajada Dupla!");
           } else if (card.name === "Impacto Bruto") {
             animateDamage(enemies[0].el);
             enemies[0].hp -= card.power;
@@ -496,11 +506,11 @@
             floatText(document.body, `+${card.power}`, "red");
           } else if (card.name === "Sistema de reflexão") {
             animateDamage(enemies[0].el);
-            playerHP += (card.power * 2) - 4;
-            enemies[0].hp -= card.power -2;
-            floatText(enemies[0].el, `-${card.power -2}`, "red");
+            playerHP += (card.power * 2);
+            enemies[0].hp -= card.power;
+            floatText(enemies[0].el, `-${card.power}`, "red");
             log("Usou Sistema de reflexão!");
-            floatText(document.body, `+${(card.power * 2) - 4}`, "cyan");
+            floatText(document.body, `+${(card.power * 2)}`, "cyan");
           } else if (card.name === "Golpe Neural Retaliante") {
             animateDamage(enemies[0].el);
             enemies[0].hp -= playerHP;
@@ -526,7 +536,7 @@
     function drawNewCards() {
       for (let i = 0; i < 5 && deck.length < 10; i++) {
         const base = { ...allCards[Math.floor(Math.random() * allCards.length)] };
-        const bonus = base.rarity === 'rare' ? 1 : base.rarity === 'epic' ? 2 : 0;
+        const bonus = base.rarity === 'rare' ? 0 : base.rarity === 'epic' ? 0 : 0;
         deck.push({ ...base, power: base.basePower + bonus });
       }
     }
