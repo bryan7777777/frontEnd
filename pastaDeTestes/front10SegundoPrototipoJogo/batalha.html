@@ -303,6 +303,14 @@
     const deck = [];
     const allCards = [
       {
+        name: "Impacto Bruto",
+        cost: 3,
+        basePower: 20,
+        rarity: "epic",
+        img: "./img/cards/atk/Impacto.png",
+        desc: "Causa 22 de dano ao inimigo."
+      },
+      {
         name: "Ataque",
         cost: 1,
         basePower: 5,
@@ -311,12 +319,12 @@
         desc: "Causa 5 de dano ao inimigo."
       },
       {
-        name: "Golpe Duplo",
+        name: "Rajada Tripla",
         cost: 2,
         basePower: 4,
         rarity: "epic",
         img: "./img/cards/atk/tiroCarregado.png",
-        desc: "Ataca duas vezes com 4 de dano cada."
+        desc: "Ataca três vezes com 4 de dano cada."
       },
       {
         name: "Explosão",
@@ -340,15 +348,23 @@
         basePower: 4,
         rarity: "rare",
         img: "./img/cards/def/escudoHolo.png",
-        desc: "Cria um escudo de 4 pontos."
+        desc: "Cria um escudo de 5 pontos."
       },
       {
         name: "Cura",
-        cost: 2,
+        cost: 1,
         basePower: 5,
-        rarity: "rare",
+        rarity: "common",
         img: "./img/cards/buff/Cura.png",
         desc: "Recupera 5 de HP."
+      },
+      {
+        name: "Sobre Carga",
+        cost: 2,
+        basePower: 6,
+        rarity: "rare",
+        img: "./img/cards/buff/sobreCarga.png",
+        desc: "Perca 7 de vida e cause 14 de dano."
       }
     ];
 
@@ -403,9 +419,9 @@
       cards.innerHTML = "";
       deck.forEach((card, i) => {
         const div = document.createElement("div");
-        let tipo = card.name === "Ataque" || card.name === "Explosão" || card.name === "Golpe Duplo" ? "attack" :
+        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Rajada Tripla" ? "attack" :
           card.name === "Defesa" || card.name === "Escudo" ? "defense" :
-            card.name === "Cura" ? "heal" : "";
+            card.name === "Cura" || card.name === "Sobre Carga" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
         div.innerHTML = `
           <img src="${card.img}" alt="${card.name}">
@@ -442,11 +458,23 @@
             glowPlayer("blue");
             floatText(document.body, `+${card.power}`, "cyan");
             log("Usou Escudo!");
-          } else if (card.name === "Golpe Duplo") {
+          } else if (card.name === "Rajada Tripla") {
             animateDamage(enemies[0].el);
             enemies[0].hp -= card.power * 2;
             floatText(enemies[0].el, `-${card.power * 2}`, "red");
-            log("Usou Golpe Duplo!");
+            log("Usou Rajada Tripla!");
+          } else if (card.name === "Impacto Bruto") {
+            animateDamage(enemies[0].el);
+            enemies[0].hp -= card.power;
+            floatText(enemies[0].el, `-${card.power}`, "red");
+            log("Usou Impacto Bruto!");
+          } else if (card.name === "Sobre Carga") {
+            animateDamage(enemies[0].el);
+            playerHP -= card.power;
+            enemies[0].hp -= card.power * 2;
+            floatText(enemies[0].el, `-${card.power * 2}`, "red");
+            log("Usou Sobre Carga!");
+            floatText(document.body, `+${card.power}`, "red");
           }
 
           div.classList.add("card-remove");
