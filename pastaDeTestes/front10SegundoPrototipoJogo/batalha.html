@@ -97,7 +97,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 10px;
+      gap: 15px;
       margin: 10px 0;
       margin-bottom: -100px;
       background-color: #292929;
@@ -107,7 +107,7 @@
     .desc{
       margin-top: 10px;
       text-align: center;
-      width: 80%;
+      width: 85%;
     }
 
     .card {
@@ -175,15 +175,18 @@
     }
 
     .common {
-      box-shadow: 0 0 30px rgb(168, 168, 168);
+      box-shadow: 0 0 20px rgb(168, 168, 168);
+      border: solid 3px rgb(119, 119, 119);
     }
 
     .rare {
-      box-shadow: 0 0 30px rgb(0, 110, 255);
+      box-shadow: 0 0 20px rgb(0, 110, 255);
+      border: solid 3px rgb(0, 84, 194);
     }
 
     .epic {
-      box-shadow: 0 0 30px rgb(140, 0, 255);
+      box-shadow: 0 0 20px rgb(140, 0, 255);
+      border: solid 3px rgb(92, 0, 167);
     }
 
     #log {
@@ -351,12 +354,28 @@
         desc: "Cria um escudo de 5 pontos."
       },
       {
+        name: "Sistema de reflexão",
+        cost: 2,
+        basePower: 5,
+        rarity: "epic",
+        img: "./img/cards/def/sisReflexao.png",
+        desc: "Cria um escudo de 10 pontos e cause 5 de dano."
+      },
+      {
         name: "Cura",
         cost: 1,
         basePower: 5,
         rarity: "common",
         img: "./img/cards/buff/Cura.png",
         desc: "Recupera 5 de HP."
+      },
+      {
+        name: "Golpe Neural Retaliante",
+        cost: 3,
+        basePower: playerHP,
+        rarity: "epic",
+        img: "./img/cards/buff/neural.png",
+        desc: "Cause dano igual sua vida atual, perca 50% da vida atual"
       },
       {
         name: "Sobre Carga",
@@ -420,8 +439,8 @@
       deck.forEach((card, i) => {
         const div = document.createElement("div");
         let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Rajada Tripla" ? "attack" :
-          card.name === "Defesa" || card.name === "Escudo" ? "defense" :
-            card.name === "Cura" || card.name === "Sobre Carga" ? "heal" : "";
+          card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Escudo" ? "defense" :
+            card.name === "Cura" || card.name === "Golpe Neural Retaliante" || card.name === "Sobre Carga" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
         div.innerHTML = `
           <img src="${card.img}" alt="${card.name}">
@@ -475,6 +494,20 @@
             floatText(enemies[0].el, `-${card.power * 2}`, "red");
             log("Usou Sobre Carga!");
             floatText(document.body, `+${card.power}`, "red");
+          } else if (card.name === "Sistema de reflexão") {
+            animateDamage(enemies[0].el);
+            playerHP += (card.power * 2) - 4;
+            enemies[0].hp -= card.power -2;
+            floatText(enemies[0].el, `-${card.power -2}`, "red");
+            log("Usou Sistema de reflexão!");
+            floatText(document.body, `+${(card.power * 2) - 4}`, "cyan");
+          } else if (card.name === "Golpe Neural Retaliante") {
+            animateDamage(enemies[0].el);
+            enemies[0].hp -= playerHP;
+            playerHP -= playerHP/2;
+            floatText(enemies[0].el, `-${playerHP*2}`, "red");
+            log("Usou Golpe Neural Retaliante!");
+            floatText(document.body, `+${"-50%"}`, "red");
           }
 
           div.classList.add("card-remove");
