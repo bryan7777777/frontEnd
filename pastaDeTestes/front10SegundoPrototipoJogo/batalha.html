@@ -66,6 +66,12 @@
       align-items: center;
     }
 
+    #player,
+    .enemy img {
+      width: 200px;
+      transition: filter 0.4s ease;
+    }
+
     .enemy {
       transform: scaleX(-1);
       margin-bottom: -30px;
@@ -73,14 +79,9 @@
 
     #player{
       transform: scaleX(-1);
+      width: 250px;
     }
-
-    #player,
-    .enemy img {
-      width: 200px;
-      transition: filter 0.4s ease;
-    }
-
+    
     #hud {
       margin: 15px 0;
       display: flex;
@@ -541,7 +542,8 @@
     }
 
     function drawNewCards() {
-      for (let i = 0; i < 5 && deck.length < 10; i++) {
+      deck.length = 0;
+      for (let i = 0; i < 5 && deck.length < 5; i++) {
         const base = { ...allCards[Math.floor(Math.random() * allCards.length)] };
         const bonus = base.rarity === 'rare' ? 0 : base.rarity === 'epic' ? 0 : 0;
         deck.push({ ...base, power: base.basePower + bonus });
