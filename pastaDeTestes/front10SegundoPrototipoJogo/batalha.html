@@ -451,11 +451,11 @@
       },
       {
         name: "Recicladora",
-        cost: 0,
-        basePower: 15,
+        cost: 1,
+        basePower: 7,
         rarity: "epic",
         img: "./img/cards/reciclagem/reciclagem.png",
-        desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario tome 15 de dano."
+        desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario ganhe 7 de escudo."
       }
     ];
 
@@ -620,8 +620,8 @@
             enemies[0].hp -= enemies[0].hp;
             floatText(enemies[0].el, `-${card.power}`, "red");
             } else{
-              playerHP -= card.power;
-              floatText(document.body, `+${card.power}`, "red");
+              playerHP += card.power;
+              floatText(document.body, `+${card.power}`, "cyan");
             }
             log("Usou Recicladora!");
           }
