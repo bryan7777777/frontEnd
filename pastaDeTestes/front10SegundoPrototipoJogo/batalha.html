@@ -191,6 +191,13 @@
       background-size: cover;
     }
 
+    .reciclagem{
+      background-image: url("img/cards/amarelo.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
     .common {
       box-shadow: 0 0 20px rgb(168, 168, 168);
       border: solid 3px rgb(119, 119, 119);
@@ -333,14 +340,14 @@
       {
         name: "Ataque",
         cost: 1,
-        basePower: 5,
+        basePower: 4,
         rarity: "common",
         img: "./img/cards/atk/LancaGranadas.png",
-        desc: "Causa 5 de dano ao inimigo."
+        desc: "Causa 4 de dano ao inimigo."
       },
       {
         name: "Rajada Dupla",
-        cost: 2,
+        cost: 1,
         basePower: 4,
         rarity: "rare",
         img: "./img/cards/atk/tiroCarregado.png",
@@ -355,12 +362,36 @@
         desc: "Causa 3 de dano em área a todos os inimigos."
       },
       {
+        name: "Chuva De Fragmentos",
+        cost: 3,
+        basePower: 12,
+        rarity: "epic",
+        img: "./img/cards/atk/ChuvaDeFragmento.png",
+        desc: "Causa 12 de dano em área a todos os inimigos."
+      },
+      {
         name: "Defesa",
-        cost: 1,
-        basePower: 3,
+        cost: 0,
+        basePower: 4,
         rarity: "common",
         img: "./img/cards/def/Blindagem.png",
-        desc: "Ganha 3 de defesa temporária."
+        desc: "Ganha 4 de defesa temporária."
+      },
+      {
+        name: "PROTOCOL-Campo De Força",
+        cost: 2,
+        basePower: 40,
+        rarity: "epic",
+        img: "./img/cards/def/campoDeForca.png",
+        desc: "Se sua vida for 10 ou menos ganhe 40 de escudo"
+      },
+      {
+        name: "Impulso Defensivo",
+        cost: 0,
+        basePower: 1,
+        rarity: "rare",
+        img: "./img/cards/def/impulsoAzul.png",
+        desc: "Ganha 3 de defesa e receba 1 de energia"
       },
       {
         name: "Escudo",
@@ -387,6 +418,22 @@
         desc: "Recupera 5 de HP."
       },
       {
+        name: "Reforço De Estrutura",
+        cost: 0,
+        basePower: 15,
+        rarity: "epic",
+        img: "./img/cards/buff/reforcoDeEstrutura.png",
+        desc: "Ganhe 15 de vida se sua vida estiver em 10 ou menos."
+      },
+      {
+        name: "Impulso",
+        cost: 1,
+        basePower: 2,
+        rarity: "rare",
+        img: "./img/cards/buff/impulsoVerd.png",
+        desc: "Ganhe mais 1 de energia."
+      },
+      {
         name: "Golpe Neural Retaliante",
         cost: 3,
         basePower: playerHP,
@@ -401,6 +448,14 @@
         rarity: "rare",
         img: "./img/cards/buff/sobreCarga.png",
         desc: "Perca 6 de vida e cause 12 de dano."
+      },
+      {
+        name: "Recicladora",
+        cost: 0,
+        basePower: 15,
+        rarity: "epic",
+        img: "./img/cards/reciclagem/reciclagem.png",
+        desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario tome 15 de dano."
       }
     ];
 
@@ -455,9 +510,9 @@
       cards.innerHTML = "";
       deck.forEach((card, i) => {
         const div = document.createElement("div");
-        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Rajada Dupla" ? "attack" :
-          card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Escudo" ? "defense" :
-            card.name === "Cura" || card.name === "Golpe Neural Retaliante" || card.name === "Sobre Carga" ? "heal" : "";
+        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Chuva De Fragmentos" || card.name === "Rajada Dupla" ? "attack" : card.name === "Recicladora" ? "reciclagem" :
+          card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Impulso Defensivo" || card.name === "PROTOCOL-Campo De Força" || card.name === "Escudo" ? "defense" :
+            card.name === "Cura" || card.name === "Reforço De Estrutura" || card.name === "Impulso" || card.name === "Golpe Neural Retaliante" || card.name === "Sobre Carga" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
         div.innerHTML = `
           <img src="${card.img}" alt="${card.name}">
@@ -490,6 +545,13 @@
               floatText(e.el, `-${card.power}`, "red");
             });
             log("Usou Explosão!");
+          } else if (card.name === "Chuva De Fragmentos") {
+            enemies.forEach(e => {
+              animateDamage(e.el);
+              e.hp -= card.power;
+              floatText(e.el, `-${card.power}`, "red");
+            });
+            log("Usou Chuva De Fragmentos!");
           } else if (card.name === "Escudo") {
             playerHP += card.power;
             glowPlayer("blue");
@@ -526,6 +588,42 @@
             floatText(enemies[0].el, `-${playerHP*2}`, "red");
             log("Usou Golpe Neural Retaliante!");
             floatText(document.body, `+${"-50%"}`, "red");
+          } else if (card.name === "Impulso") {
+            energy += card.power;
+            glowPlayer("green");
+            floatText(document.body, `+${card.power - 1}`, "lime");
+            log("Usou Impulso!");
+          } else if (card.name === "Reforço De Estrutura") {
+            if (playerHP <= 10) {
+              playerHP += card.power;
+              floatText(document.body, `+${card.power}`, "lime");
+              glowPlayer("green");
+            }
+            log("Usou PROTOCOL-Campo De Força!");
+          } else if (card.name === "PROTOCOL-Campo De Força") {
+            if (playerHP <= 10) {
+              playerHP += card.power;
+              floatText(document.body, `+${card.power}`, "cyan");
+              glowPlayer("blue");
+            }
+            log("Usou PROTOCOL-Campo De Força!");
+          } else if (card.name === "Impulso Defensivo") {
+            energy += card.power;
+            playerHP += card.power * 3;
+            glowPlayer("blue");
+            floatText(document.body, `+${card.power}`, "cyan");
+            floatText(document.body, `+${card.power + 2}`, "cyan");
+            log("Usou Impulso Defensivo!");
+          } else if (card.name === "Recicladora") {
+            if (enemies[0].hp == 15) {
+              animateDamage(enemies[0].el);
+            enemies[0].hp -= enemies[0].hp;
+            floatText(enemies[0].el, `-${card.power}`, "red");
+            } else{
+              playerHP -= card.power;
+              floatText(document.body, `+${card.power}`, "red");
+            }
+            log("Usou Recicladora!");
           }
 
           div.classList.add("card-remove");
@@ -535,7 +633,8 @@
             checkEnemies();
           }, 300);
           updateHUD();
-          if (energy === 0) enemyTurn();
+          // caso a energia seja 0 ele skipa o turno auto
+          // if (energy === 0) enemyTurn();
         };
         cards.appendChild(div);
       });
@@ -543,7 +642,7 @@
 
     function drawNewCards() {
       deck.length = 0;
-      for (let i = 0; i < 5 && deck.length < 5; i++) {
+      for (let i = 0; i < 7 && deck.length < 7; i++) {
         const base = { ...allCards[Math.floor(Math.random() * allCards.length)] };
         const bonus = base.rarity === 'rare' ? 0 : base.rarity === 'epic' ? 0 : 0;
         deck.push({ ...base, power: base.basePower + bonus });
