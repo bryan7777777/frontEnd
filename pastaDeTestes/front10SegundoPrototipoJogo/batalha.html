@@ -203,14 +203,34 @@
       border: solid 3px rgb(119, 119, 119);
     }
 
+    .common img{
+      border: solid 3px rgb(119, 119, 119);
+    }
+
     .rare {
       box-shadow: 0 0 20px rgb(0, 110, 255);
+      border: solid 3px rgb(0, 84, 194);
+    }
+    .rare img {
       border: solid 3px rgb(0, 84, 194);
     }
 
     .epic {
       box-shadow: 0 0 20px rgb(140, 0, 255);
       border: solid 3px rgb(92, 0, 167);
+    }
+
+    .epic img{
+      border: solid 3px rgb(92, 0, 167);
+    }
+
+    .legend {
+      box-shadow: 0 0 20px rgb(255, 230, 0);
+      border: solid 3px rgb(167, 142, 0);
+    }
+
+    .legend img{
+      border: solid 3px rgb(167, 142, 0);
     }
 
     #log {
@@ -453,7 +473,7 @@
         name: "Recicladora",
         cost: 1,
         basePower: 7,
-        rarity: "epic",
+        rarity: "legend",
         img: "./img/cards/reciclagem/reciclagem.png",
         desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario ganhe 7 de escudo."
       }
@@ -644,8 +664,10 @@
       deck.length = 0;
       for (let i = 0; i < 7 && deck.length < 7; i++) {
         const base = { ...allCards[Math.floor(Math.random() * allCards.length)] };
-        const bonus = base.rarity === 'rare' ? 0 : base.rarity === 'epic' ? 0 : 0;
-        deck.push({ ...base, power: base.basePower + bonus });
+        // bonus de pts para cada tipo de raridade
+        // const bonus = base.rarity === 'rare' ? 0 : base.rarity === 'epic' ? 0 : 0;
+        // deck.push({ ...base, power: base.basePower + bonus });
+        deck.push({ ...base, power: base.basePower });
       }
     }
 
