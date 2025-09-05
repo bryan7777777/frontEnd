@@ -20,6 +20,22 @@
       width: 100vw;
     }
 
+    #lifeBar{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(0, 162, 255, 0.4);
+      border-radius: 25px;
+      padding: 10px;
+      text-align: center;
+      border: solid 1px rgba(2, 0, 102, 0.4);
+      box-shadow: 0 0 30px rgba(0, 162, 255);
+      padding: 5px;
+      max-width: 100px;
+      min-width: 100px;
+    }
+
     #playerBarra{
       height: 100px;
       width: 100%;
@@ -31,6 +47,20 @@
     #finalTurno{
       width: 150%;
       height: 40px;
+      font-size: 100%;
+      background-color: rgba(0, 255, 255, 0.521);
+      border-radius: 0px 25px;
+      border: solid 2px rgba(0, 255, 255, 0.521);
+      color: aliceblue;
+      padding: 10px;  
+      transition: 0.5s;
+    }
+
+    #finalTurno:hover{
+    background-color: rgb(0, 214, 53);
+    box-shadow: 2px 2px 50px 2px rgba(0, 255, 106, 0.521);
+    width: 160%;
+    border: solid 2px rgba(5, 129, 57, 0.644);
     }
 
     #jogo {
@@ -91,14 +121,6 @@
       flex-direction: column;
     }
 
-    #hp{
-      color: rgb(146, 14, 31);
-    }
-
-    #energy{
-      color: rgb(0, 46, 133);
-    }
-
     #cards {
       width: 100%;
       display: flex;
@@ -121,7 +143,7 @@
     .energia{
       color: rgb(0, 0, 0);
       width: 76%;
-      margin-top: -98px;
+      margin-top: -100px;
       margin-bottom: 72px;
       text-align: left;
       border-radius: 100%;
@@ -156,7 +178,7 @@
     }
 
     .card:hover {
-      transform: scale(1.05);
+      transform: scale(1.10);
     }
 
     .card-remove {
@@ -193,6 +215,13 @@
 
     .reciclagem{
       background-image: url("img/cards/amarelo.jpg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    .lixo{
+      background-image: url("img/cards/sinza.jpg");
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
@@ -332,13 +361,16 @@
     <div id="log"></div>
     <div id="battlefield">
       <div id="player-area">
+        <p id="lifeBar">❤️ <strong><span id="hp">30</span></strong>  🔷 <strong><span id="energy">3</span></strong></p>
         <img id="player" src="./img/player/mineiro.png" alt="Jogador">
       </div>
+      <div id="inimigo-area">
+      <p id="lifeBar">💀 <strong><span id="inimigo">25</span></strong>  ⚔️ <strong><span>5</span></strong></p>
       <div id="enemies"></div>
+      </div>
     </div>
 
     <div id="hud">
-      <p>❤️ <strong><span id="hp">30</span></strong> | 🔷 <strong><span id="energy">3</span></strong></p>
       <button onclick="enemyTurn()" id="finalTurno">FINALIZAR TURNO</button>
     </div>
 
@@ -476,6 +508,14 @@
         rarity: "legend",
         img: "./img/cards/reciclagem/reciclagem.png",
         desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario ganhe 7 de escudo."
+      },
+      {
+        name: "Entulho",
+        cost: 0,
+        basePower: 0,
+        rarity: "common",
+        img: "./img/cards/lixo/entulho.png",
+        desc: "Um monte de entulho que não faz nada, quem sabe você ache uma utilidade para ele."
       }
     ];
 
@@ -499,6 +539,7 @@
     function updateHUD() {
       document.getElementById("hp").textContent = playerHP;
       document.getElementById("energy").textContent = energy;
+      document.getElementById("inimigo").textContent = enemies[0].hp;
     }
 
     function floatText(target, text, color) {
@@ -530,7 +571,7 @@
       cards.innerHTML = "";
       deck.forEach((card, i) => {
         const div = document.createElement("div");
-        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Chuva De Fragmentos" || card.name === "Rajada Dupla" ? "attack" : card.name === "Recicladora" ? "reciclagem" :
+        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Chuva De Fragmentos" || card.name === "Rajada Dupla" ? "attack" : card.name === "Recicladora" ? "reciclagem" : card.name === "Entulho" ? "lixo" :
           card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Impulso Defensivo" || card.name === "PROTOCOL-Campo De Força" || card.name === "Escudo" ? "defense" :
             card.name === "Cura" || card.name === "Reforço De Estrutura" || card.name === "Impulso" || card.name === "Golpe Neural Retaliante" || card.name === "Sobre Carga" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
@@ -644,6 +685,8 @@
               floatText(document.body, `+${card.power}`, "cyan");
             }
             log("Usou Recicladora!");
+          } else if (card.name === "Entulho") {
+            log("Usou Entulho!");
           }
 
           div.classList.add("card-remove");
