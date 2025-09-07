@@ -48,7 +48,7 @@
     }
 
     #lifeBar,
-    #lifeBar2 {
+    #lifeBarsContainer {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -64,8 +64,12 @@
       min-width: 100px;
     }
 
-    #lifeBar2{
-      max-width: 80px;
+    #lifeBarsContainer{
+      max-width: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
     }
 
     #playerBarra {
@@ -406,8 +410,8 @@
         <img id="player" src="./img/player/mineiro.png" alt="Jogador">
       </div>
       <div id="inimigo-area">
-        <p id="lifeBar2">💀 <strong><span id="inimigo">25</span></strong> ⚔️ <strong><span>5</span></strong></p>
-        <div id="enemies"></div>
+        <div id="lifeBarsContainer"></div>
+<div id="enemies"></div>
       </div>
     </div>
 
@@ -560,14 +564,36 @@
       }
     ];
 
-    const enemies = [
-      {
-        name: "Tartaruga",
-        hp: 25,
-        behavior: () => [{ type: "attack", value: 5 }],
-        el: createEnemy("./img/inimigos/minion.png")
-      }
-    ];
+    const enemyModels = [
+  {
+    name: "Tartaruga",
+    hp: 25,
+    behavior: () => [{ type: "attack", value: 5 }],
+    img: "./img/inimigos/minion.png"
+  },
+  {
+    name: "Lobo",
+    hp: 18,
+    behavior: () => [{ type: "attack", value: 7 }],
+    img: "./img/inimigos/inimigo1.png"
+  },
+  {
+    name: "Esqueleto",
+    hp: 20,
+    behavior: () => [
+      { type: "attack", value: Math.random() < 0.5 ? 4 : 8 }
+    ],
+    img: "./img/inimigos/inimigo6.png"
+  },
+  {
+    name: "Mago Sombrio",
+    hp: 15,
+    behavior: () => [
+      { type: Math.random() < 0.5 ? "attack" : "buff", value: 6 }
+    ],
+    img: "./img/inimigos/inimigo6.png"
+  }
+];
 
     function createEnemy(imgSrc) {
       const div = document.createElement("div");
@@ -577,13 +603,49 @@
       return div;
     }
 
+    let enemies = [];
+
+function spawnEnemies() {
+  enemies = [];
+  const enemiesContainer = document.getElementById("enemies");
+  enemiesContainer.innerHTML = ""; // limpa inimigos
+  document.getElementById("lifeBarsContainer").innerHTML = ""; // limpa barras de status
+
+  const qtd = Math.floor(Math.random() * 3) + 1; // 1 a 3 inimigos
+
+  for (let i = 0; i < qtd; i++) {
+    const base = enemyModels[Math.floor(Math.random() * enemyModels.length)];
+
+    // cria inimigo
+    const enemy = {
+      name: base.name,
+      hp: base.hp,
+      behavior: base.behavior,
+      el: createEnemy(base.img)
+    };
+    enemies.push(enemy);
+
+    // cria barra de status individual
+    const lifeBar = document.createElement("p");
+    lifeBar.className = "enemy-bar";
+    lifeBar.innerHTML = `| ❤️ <strong>${enemy.name}: <span class="enemy-hp">${enemy.hp}</span> </strong> ⚔️ <strong>${enemy.behavior()[0].value} | </strong>`;
+    document.getElementById("lifeBarsContainer").appendChild(lifeBar);
+
+    // linka a barra ao inimigo
+    enemy.barEl = lifeBar.querySelector(".enemy-hp");
+  }
+
+  enemiesContainer.style.display = "flex";
+}
+
     function updateHUD() {
-      document.getElementById("hp").textContent = `${playerHP} | 🛡️ ${playerShield} | `;
-      document.getElementById("energy").textContent = energy;
-      if (enemies.length > 0) {
-        document.getElementById("inimigo").textContent = enemies[0].hp;
-      }
-    }
+  document.getElementById("hp").textContent = `${playerHP} | 🛡️ ${playerShield}`;
+  document.getElementById("energy").textContent = energy;
+
+  enemies.forEach(e => {
+    if (e.barEl) e.barEl.textContent = e.hp > 0 ? e.hp : 0;
+  });
+}
 
     function floatText(target, text, color) {
       const el = document.createElement("div");
@@ -608,6 +670,8 @@
       el.classList.add("shake", "damaged");
       setTimeout(() => el.classList.remove("shake", "damaged"), 400);
     }
+
+    
 
     function drawCards() {
       const cards = document.getElementById("cards");
@@ -802,22 +866,25 @@
     }
 
     function checkEnemies() {
-      for (let i = enemies.length - 1; i >= 0; i--) {
-        if (enemies[i].hp <= 0) {
-          log(`${enemies[i].name} foi derrotado!`);
-          enemies[i].el.remove();
-          enemies.splice(i, 1);
-          document.getElementById("enemies").style.display = "none";
-          document.getElementById("lifeBar2").style.display = "none";
-
-          document.getElementById("overlay").style.display = "block";
-          document.getElementById("popup").style.display = "block";
-          gerarItens();
-
-          limiteMao = maoInicio;
-        }
-      }
+  for (let i = enemies.length - 1; i >= 0; i--) {
+    if (enemies[i].hp <= 0) {
+      log(`${enemies[i].name} foi derrotado!`);
+      enemies[i].el.remove();
+      enemies[i].barEl.parentElement.remove();
+      enemies.splice(i, 1);
     }
+  }
+
+  // só abre o popup e reseta a mão se todos os inimigos morreram
+  if (enemies.length === 0) {
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup").style.display = "block";
+    gerarItens();
+    limiteMao = maoInicio;
+              document.getElementById("enemies").style.display = "none";
+          document.getElementById("lifeBarsContainer").style.display = "none";
+  }
+}
 
     function gerarItens() {
       const container = document.getElementById("recompensa");
@@ -861,9 +928,10 @@
       document.getElementById("log").prepend(el);
     }
 
-    drawNewCards();
-    drawCards();
-    updateHUD();
+    spawnEnemies(); // gera inimigos aleatórios no início
+drawNewCards();
+drawCards();
+updateHUD();
   </script>
 </body>
 
