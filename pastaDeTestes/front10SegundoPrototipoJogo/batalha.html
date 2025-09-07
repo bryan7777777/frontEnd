@@ -567,27 +567,27 @@
     const enemyModels = [
   {
     name: "Tartaruga",
-    hp: 25,
+    hp: 15,
     behavior: () => [{ type: "attack", value: 5 }],
     img: "./img/inimigos/minion.png"
   },
   {
-    name: "Lobo",
-    hp: 18,
+    name: "Lenhador corrompido",
+    hp: 30,
     behavior: () => [{ type: "attack", value: 7 }],
     img: "./img/inimigos/inimigo1.png"
   },
   {
-    name: "Esqueleto",
-    hp: 20,
+    name: "Drone agricultor",
+    hp: 5,
     behavior: () => [
       { type: "attack", value: Math.random() < 0.5 ? 4 : 8 }
     ],
-    img: "./img/inimigos/inimigo6.png"
+    img: "./img/inimigos/inimigo5.png"
   },
   {
-    name: "Mago Sombrio",
-    hp: 15,
+    name: "IA sacerdotisa",
+    hp: 35,
     behavior: () => [
       { type: Math.random() < 0.5 ? "attack" : "buff", value: 6 }
     ],
