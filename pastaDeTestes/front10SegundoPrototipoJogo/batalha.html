@@ -6,8 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jogo de Cartas</title>
   <style>
-    html, body{
-      overflow: hidden;
+    html,
+    body {
+      /* overflow: hidden; */
     }
 
     body {
@@ -68,7 +69,7 @@
       min-width: 100px;
     }
 
-    #lifeBarsContainer{
+    #lifeBarsContainer {
       max-width: 800px;
       display: flex;
       align-items: center;
@@ -137,7 +138,7 @@
       align-items: center;
     }
 
-    #enemies{
+    #enemies {
       gap: 50px;
       margin-left: 320px;
     }
@@ -152,7 +153,7 @@
       margin-bottom: -30px;
     }
 
-    
+
     #player {
       width: 250px;
     }
@@ -335,6 +336,7 @@
       50% {
         box-shadow: 0 0 65px rgb(79, 158, 255);
         border-radius: 45%;
+        /* transform: rotate(360deg); */
       }
     }
 
@@ -387,14 +389,15 @@
     }
 
     .float-text {
-  position: absolute;
-  font-weight: bold;
-  color: white;
-  text-shadow: 1px 1px 3px black;
-  pointer-events: none;
-  z-index: 9999;
-  font-size: 40px;
-}
+      position: absolute;
+      font-weight: bold;
+      color: white;
+      text-shadow: 1px 1px 3px black;
+      pointer-events: none;
+      z-index: 9999;
+      font-size: 40px;
+    }
+
     @keyframes floatUp {
       0% {
         transform: translateY(0);
@@ -427,7 +430,7 @@
       </div>
       <div id="inimigo-area">
         <div id="lifeBarsContainer"></div>
-<div id="enemies"></div>
+        <div id="enemies"></div>
       </div>
     </div>
 
@@ -460,6 +463,14 @@
         desc: "Causa 4 de dano ao inimigo."
       },
       {
+        name: "Drenagem",
+        cost: 1,
+        basePower: 10,
+        rarity: "legend",
+        img: "./img/cards/atk/drenoDeVida.png",
+        desc: "Causa 10 de dano ao inimigo e cure-se em 10."
+      },
+      {
         name: "Rajada Dupla",
         cost: 1,
         basePower: 4,
@@ -484,6 +495,22 @@
         desc: "Causa 12 de dano em área a todos os inimigos."
       },
       {
+        name: "Beserck",
+        cost: 2,
+        basePower: 10,
+        rarity: "epic",
+        img: "./img/cards/atk/beserck.png",
+        desc: "Perca 10 de vida e toda sua armadura, cause dano baseado na armadura perdida +10."
+      },
+      {
+        name: "Fogo Amigo",
+        cost: 3,
+        basePower: 30,
+        rarity: "epic",
+        img: "./img/cards/atk/bombardeio.png",
+        desc: "Cause 30 de dano a TODOS incuindo você."
+      },
+      {
         name: "Defesa",
         cost: 0,
         basePower: 4,
@@ -498,6 +525,14 @@
         rarity: "epic",
         img: "./img/cards/def/campoDeForca.png",
         desc: "Se sua vida for 25 ou menos ganhe 40 de escudo"
+      },
+      {
+        name: "Brilhando",
+        cost: 2,
+        basePower: 60,
+        rarity: "legend",
+        img: "./img/cards/def/escudoDeVidro.png",
+        desc: "Se sua vida estiver cheia ganhe 60 de escudo"
       },
       {
         name: "Impulso Defensivo",
@@ -524,12 +559,28 @@
         desc: "Cria um escudo de 10 pontos e cause 5 de dano."
       },
       {
+        name: "Escudo Retaliante",
+        cost: 1,
+        basePower: 0,
+        rarity: "rare",
+        img: "./img/cards/def/escudoRetaliante.png",
+        desc: "Causa dano igual à sua armadura atual."
+      },
+      {
         name: "Cura",
         cost: 1,
-        basePower: 5,
+        basePower: 7,
         rarity: "common",
         img: "./img/cards/buff/Cura.png",
-        desc: "Recupera 5 de vida."
+        desc: "Recupera 7 de vida."
+      },
+      {
+        name: "Mineração",
+        cost: 0,
+        basePower: 3,
+        rarity: "legend",
+        img: "./img/cards/buff/mineracao.png",
+        desc: "Minerção sustentavel, fornesce 3 de energia, viva a sustentabilidade!"
       },
       {
         name: "PROTOCOL-Reforço Estrutural",
@@ -564,6 +615,14 @@
         desc: "Perca 6 de vida e cause 12 de dano."
       },
       {
+        name: "Compra Dupla",
+        cost: 1,
+        basePower: 0,
+        rarity: "rare",
+        img: "./img/cards/buff/comprarCarta.png",
+        desc: "Compra 2 cartas aleatórias."
+      },
+      {
         name: "Recicladora",
         cost: 1,
         basePower: 7,
@@ -572,45 +631,90 @@
         desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario ganhe 7 de escudo."
       },
       {
+        name: "Destruir Carta",
+        cost: 0,
+        basePower: 0,
+        rarity: "common",
+        img: "./img/cards/reciclagem/destruirCarta.png",
+        desc: "Destroi todas as cartas do tipo 'lixo' na sua mão.",
+      },
+      {
+        name: "Ataque Reciclável",
+        cost: 1,
+        basePower: 0,
+        rarity: "rare",
+        img: "./img/cards/reciclagem/atkReciclavel.png",
+        desc: "Remove cartas de lixo da mão e causa 5 de dano por cada carta removida.",
+        type: "attack"
+      },
+      {
+        name: "Defesa Reciclável",
+        cost: 1,
+        basePower: 0,
+        rarity: "rare",
+        img: "./img/cards/reciclagem/defesaReciclavel.png",
+        desc: "Remove cartas de lixo da mão e ganhe 5 de escudo por cada carta removida.",
+        type: "attack"
+      },
+      {
+        name: "Xenofluxo Reciclável",
+        cost: 0,
+        basePower: 0,
+        rarity: "rare",
+        img: "./img/cards/reciclagem/ganhoDeEnergia.png",
+        desc: "Remove cartas de lixo da mão e ganhe 1 de energia por cada carta removida.",
+        type: "attack"
+      },
+      {
         name: "Entulho",
         cost: 0,
         basePower: 0,
         rarity: "common",
         img: "./img/cards/lixo/entulho.png",
-        desc: "Um monte de entulho que não faz nada, quem sabe você ache uma utilidade para ele."
+        desc: "Um monte de entulho que não faz nada, quem sabe você ache uma utilidade para ele.",
+        type: "lixo"
+      },
+      {
+        name: "Ferro Velho",
+        cost: 0,
+        basePower: 0,
+        rarity: "common",
+        img: "./img/cards/lixo/ferroVelho.png",
+        desc: "Adiciona 2 cartas de Entulho à sua mão.",
+        type: "lixo"
       }
     ];
 
     const enemyModels = [
-  {
-    name: "Tartaruga",
-    hp: 30,
-    behavior: () => [{ type: "attack", value: 5 }],
-    img: "./img/inimigos/minion.png"
-  },
-  {
-    name: "Ferrujão",
-    hp: 25,
-    behavior: () => [{ type: "attack", value: 7 }],
-    img: "./img/inimigos/inimigo1.png"
-  },
-  {
-    name: "Drone agricola",
-    hp: 7,
-    behavior: () => [
-      { type: "attack", value: Math.random() < 0.5 ? 3 : 6 }
-    ],
-    img: "./img/inimigos/inimigo5.png"
-  },
-  {
-    name: "IA sacerdotisa",
-    hp: 50,
-    behavior: () => [
-      { type: "attack", value: Math.random() < 0.5 ? 5 : 10 }
-    ],
-    img: "./img/inimigos/inimigo6.png"
-  }
-];
+      {
+        name: "Tartaruga",
+        hp: 30,
+        behavior: () => [{ type: "attack", value: 5 }],
+        img: "./img/inimigos/minion.png"
+      },
+      {
+        name: "Ferrujão",
+        hp: 25,
+        behavior: () => [{ type: "attack", value: 7 }],
+        img: "./img/inimigos/inimigo1.png"
+      },
+      {
+        name: "Drone agricola",
+        hp: 7,
+        behavior: () => [
+          { type: "attack", value: Math.random() < 0.5 ? 3 : 6 }
+        ],
+        img: "./img/inimigos/inimigo5.png"
+      },
+      {
+        name: "IA sacerdotisa",
+        hp: 50,
+        behavior: () => [
+          { type: "attack", value: Math.random() < 0.5 ? 5 : 10 }
+        ],
+        img: "./img/inimigos/inimigo6.png"
+      }
+    ];
 
     function createEnemy(imgSrc) {
       const div = document.createElement("div");
@@ -622,105 +726,105 @@
 
     let enemies = [];
 
-function spawnEnemies() {
-  enemies = [];
-  const enemiesContainer = document.getElementById("enemies");
-  enemiesContainer.innerHTML = ""; // limpa inimigos
-  document.getElementById("lifeBarsContainer").innerHTML = ""; // limpa barras de status
+    function spawnEnemies() {
+      enemies = [];
+      const enemiesContainer = document.getElementById("enemies");
+      enemiesContainer.innerHTML = ""; // limpa inimigos
+      document.getElementById("lifeBarsContainer").innerHTML = ""; // limpa barras de status
 
-  const qtd = Math.floor(Math.random() * 3) + 1; // 1 a 3 inimigos
+      const qtd = Math.floor(Math.random() * 3) + 1; // 1 a 3 inimigos
 
-  for (let i = 0; i < qtd; i++) {
-    const base = enemyModels[Math.floor(Math.random() * enemyModels.length)];
+      for (let i = 0; i < qtd; i++) {
+        const base = enemyModels[Math.floor(Math.random() * enemyModels.length)];
 
-    // cria inimigo
-    const enemy = {
-      name: base.name,
-      hp: base.hp,
-      behavior: base.behavior,
-      el: createEnemy(base.img)
-    };
-    enemies.push(enemy);
+        // cria inimigo
+        const enemy = {
+          name: base.name,
+          hp: base.hp,
+          behavior: base.behavior,
+          el: createEnemy(base.img)
+        };
+        enemies.push(enemy);
 
-    // cria barra de status individual
-    const lifeBar = document.createElement("p");
-    lifeBar.className = "enemy-bar";
-    lifeBar.innerHTML = `| ❤️ <strong>${enemy.name}: <span class="enemy-hp">${enemy.hp}</span> </strong> ⚔️ <strong>${enemy.behavior()[0].value} | </strong>`;
-    document.getElementById("lifeBarsContainer").appendChild(lifeBar);
+        // cria barra de status individual
+        const lifeBar = document.createElement("p");
+        lifeBar.className = "enemy-bar";
+        lifeBar.innerHTML = `| ❤️ <strong>${enemy.name}: <span class="enemy-hp">${enemy.hp}</span> </strong> ⚔️ <strong>${enemy.behavior()[0].value} | </strong>`;
+        document.getElementById("lifeBarsContainer").appendChild(lifeBar);
 
-    // linka a barra ao inimigo
-    enemy.barEl = lifeBar.querySelector(".enemy-hp");
-  }
+        // linka a barra ao inimigo
+        enemy.barEl = lifeBar.querySelector(".enemy-hp");
+      }
 
-  enemiesContainer.style.display = "flex";
-}
+      enemiesContainer.style.display = "flex";
+    }
 
     function updateHUD() {
-  document.getElementById("hp").textContent = `${playerHP} | 🛡️ ${playerShield} | `;
-  document.getElementById("energy").textContent = energy;
+      document.getElementById("hp").textContent = `${playerHP} | 🛡️ ${playerShield} | `;
+      document.getElementById("energy").textContent = energy;
 
-  enemies.forEach(e => {
-    if (e.barEl) e.barEl.textContent = e.hp > 0 ? e.hp : 0;
-  });
-}
+      enemies.forEach(e => {
+        if (e.barEl) e.barEl.textContent = e.hp > 0 ? e.hp : 0;
+      });
+    }
 
-let floatQueue = [];
-let showingFloat = false;
+    let floatQueue = [];
+    let showingFloat = false;
 
-function floatText(target, text, color) {
-  // Adiciona à fila
-  floatQueue.push({ target, text, color });
+    function floatText(target, text, color) {
+      // Adiciona à fila
+      floatQueue.push({ target, text, color });
 
-  // Se já estiver mostrando, não dispara outra
-  if (!showingFloat) processFloatQueue();
-}
+      // Se já estiver mostrando, não dispara outra
+      if (!showingFloat) processFloatQueue();
+    }
 
-function processFloatQueue() {
-  if (floatQueue.length === 0) {
-    showingFloat = false;
-    return;
-  }
+    function processFloatQueue() {
+      if (floatQueue.length === 0) {
+        showingFloat = false;
+        return;
+      }
 
-  showingFloat = true;
-  const { target, text, color } = floatQueue.shift();
+      showingFloat = true;
+      const { target, text, color } = floatQueue.shift();
 
-  const div = document.createElement("div");
-  div.className = "float-text";
-  div.style.color = color;
-  div.style.fontWeight = "bold";
-  div.style.position = "absolute";
-  div.style.opacity = "1";
-  div.style.pointerEvents = "none"; // Para não bloquear cliques
-  div.innerText = text;
-  document.body.appendChild(div);
+      const div = document.createElement("div");
+      div.className = "float-text";
+      div.style.color = color;
+      div.style.fontWeight = "bold";
+      div.style.position = "absolute";
+      div.style.opacity = "1";
+      div.style.pointerEvents = "none"; // Para não bloquear cliques
+      div.innerText = text;
+      document.body.appendChild(div);
 
-  // 🔹 Posição inicial
-  let x = window.innerWidth / 2;
-  let y = window.innerHeight / 2;
+      // 🔹 Posição inicial
+      let x = window.innerWidth / 2;
+      let y = window.innerHeight / 2;
 
-  if (target && target.getBoundingClientRect) {
-    const rect = target.getBoundingClientRect();
-    x = rect.left + rect.width / 2 + window.scrollX;
-    y = rect.top + window.scrollY - 20; // sobe um pouco acima do alvo
-  }
+      if (target && target.getBoundingClientRect) {
+        const rect = target.getBoundingClientRect();
+        x = rect.left + rect.width / 2 + window.scrollX;
+        y = rect.top + window.scrollY - 20; // sobe um pouco acima do alvo
+      }
 
-  div.style.left = x + "px";
-  div.style.top = y + "px";
-  div.style.transform = "translateX(-50%)";
+      div.style.left = x + "px";
+      div.style.top = y + "px";
+      div.style.transform = "translateX(-50%)";
 
-  // 🔹 Animação (subir e desaparecer)
-  setTimeout(() => {
-    div.style.transition = "all 0.8s ease-out";
-    div.style.opacity = "0";
-    div.style.top = (y - 40) + "px";
-  }, 50);
+      // 🔹 Animação (subir e desaparecer)
+      setTimeout(() => {
+        div.style.transition = "all 0.8s ease-out";
+        div.style.opacity = "0";
+        div.style.top = (y - 40) + "px";
+      }, 50);
 
-  // 🔹 Remover e processar próximo
-  setTimeout(() => {
-    div.remove();
-    processFloatQueue();
-  }, 900);
-}
+      // 🔹 Remover e processar próximo
+      setTimeout(() => {
+        div.remove();
+        processFloatQueue();
+      }, 900);
+    }
 
     function glowPlayer(color) {
       const p = document.getElementById("player");
@@ -735,16 +839,16 @@ function processFloatQueue() {
       setTimeout(() => el.classList.remove("shake", "damaged"), 400);
     }
 
-    
+
 
     function drawCards() {
       const cards = document.getElementById("cards");
       cards.innerHTML = "";
       deck.forEach((card, i) => {
         const div = document.createElement("div");
-        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Explosão" || card.name === "Chuva De Fragmentos" || card.name === "Rajada Dupla" ? "attack" : card.name === "Recicladora" ? "reciclagem" : card.name === "Entulho" ? "lixo" :
-          card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Impulso Defensivo" || card.name === "PROTOCOL-Campo De Força" || card.name === "Escudo" ? "defense" :
-            card.name === "Cura" || card.name === "PROTOCOL-Reforço Estrutural" || card.name === "Impulso" || card.name === "Golpe Neural Retaliante" || card.name === "Sobre Carga" ? "heal" : "";
+        let tipo = card.name === "Ataque" || card.name === "Impacto Bruto" || card.name === "Fogo Amigo" || card.name === "Drenagem" || card.name === "Beserck" || card.name === "Explosão" || card.name === "Chuva De Fragmentos" || card.name === "Rajada Dupla" ? "attack" : card.name === "Recicladora" || card.name === "Ataque Reciclável" || card.name === "Defesa Reciclável" || card.name === "Xenofluxo Reciclável" || card.name === "Destruir Carta" ? "reciclagem" : card.name === "Entulho" || card.name === "Ferro Velho" ? "lixo" :
+          card.name === "Defesa" || card.name === "Sistema de reflexão" || card.name === "Escudo Retaliante" || card.name === "Impulso Defensivo" || card.name === "PROTOCOL-Campo De Força" || card.name === "Brilhando" || card.name === "Escudo" ? "defense" :
+            card.name === "Cura" || card.name === "Mineração" || card.name === "PROTOCOL-Reforço Estrutural" || card.name === "Impulso" || card.name === "Golpe Neural Retaliante" || card.name === "Compra Dupla" || card.name === "Sobre Carga" ? "heal" : "";
         div.className = `card ${card.rarity} ${tipo}`;
         div.innerHTML = `
           <img src="${card.img}" alt="${card.name}">
@@ -765,6 +869,14 @@ function processFloatQueue() {
             glowPlayer("blue");
             floatText(document.getElementById("player"), `+${card.power}`, "cyan");
             log("Usou Defesa!");
+          } else if (card.name === "Drenagem") {
+            playerShield += card.power;
+            glowPlayer("green");
+            playerHP = Math.min(playerHP + card.power, playerMaxHP);
+            enemies[0].hp -= card.power;
+            floatText(enemies[0].el, `-${card.power}`, "red");
+            floatText(document.getElementById("player"), `+${card.power}`, "lime");
+            log("Usou Drenagem!");
           } else if (card.name === "Cura") {
             playerHP = Math.min(playerHP + card.power, playerMaxHP);
             glowPlayer("green");
@@ -784,6 +896,25 @@ function processFloatQueue() {
               floatText(e.el, `-${card.power}`, "red");
             });
             log("Usou Chuva De Fragmentos!");
+          }  else if (card.name === "Fogo Amigo") {
+            enemies.forEach(e => {
+              animateDamage(e.el);
+              e.hp -= card.power;
+              floatText(e.el, `-${card.power}`, "red");
+              let dano = card.power;
+
+              if (playerShield > 0) {
+                let absorbed = Math.min(dano, playerShield);
+                playerShield -= absorbed;
+                dano -= absorbed;
+              }
+
+              if (dano > 0) {
+                playerHP -= dano;
+              }
+            });
+            animateDamage(document.getElementById("player"));
+            log("Usou Fogo Amigo!");
           } else if (card.name === "Escudo") {
             playerShield += card.power;
             glowPlayer("blue");
@@ -803,13 +934,15 @@ function processFloatQueue() {
             log("Usou Impacto Bruto!");
           } else if (card.name === "Sobre Carga") {
             animateDamage(enemies[0].el);
-            playerHP = Math.min(playerHP + card.power, playerMaxHP);
+            animateDamage(document.getElementById("player"));
+            playerHP = Math.min(playerHP - card.power, playerMaxHP);
             enemies[0].hp -= card.power * 2;
             floatText(enemies[0].el, `-${card.power * 2}`, "red");
             log("Usou Sobre Carga!");
-            floatText(document.getElementById("player"), `+${card.power}`, "red");
+            floatText(document.getElementById("player"), `-${card.power}`, "red");
           } else if (card.name === "Sistema de reflexão") {
             animateDamage(enemies[0].el);
+            glowPlayer("blue");
             playerShield += (card.power * 2);
             enemies[0].hp -= card.power;
             floatText(enemies[0].el, `-${card.power}`, "red");
@@ -817,15 +950,35 @@ function processFloatQueue() {
             floatText(document.getElementById("player"), `+${(card.power * 2)}`, "cyan");
           } else if (card.name === "Golpe Neural Retaliante") {
             animateDamage(enemies[0].el);
+            animateDamage(document.getElementById("player"));
             enemies[0].hp -= playerHP;
             playerHP -= playerHP / 2;
             floatText(enemies[0].el, `-${playerHP * 2}`, "red");
             log("Usou Golpe Neural Retaliante!");
-            floatText(document.getElementById("player"), `+${"-50%"}`, "red");
+            floatText(document.getElementById("player"), `${"-50%"}`, "red");
+          } else if (card.name === "Beserck") {
+            if (playerShield > 0) {
+              enemies[0].hp -= playerShield;
+              floatText(document.getElementById("player"), `-${playerShield}`, "red");
+              playerShield = 0;
+              animateDamage(enemies[0].el);
+            }
+            animateDamage(enemies[0].el);
+            animateDamage(document.getElementById("player"));
+            enemies[0].hp -= card.power;
+            playerHP -= card.power;
+            floatText(enemies[0].el, `-${card.power}`, "red");
+            log("Beserck!");
+            floatText(document.getElementById("player"), `-${card.power}`, "red");
           } else if (card.name === "Impulso") {
             if (limiteMao < maoInicio + 3) {
               limiteMao += 1;
             }
+            glowPlayer("green");
+            floatText(document.getElementById("player"), `+${card.power}`, "lime");
+            log("Usou Impulso!");
+          } else if (card.name === "Mineração") {
+            energy += card.power;
             glowPlayer("green");
             floatText(document.getElementById("player"), `+${card.power}`, "lime");
             log("Usou Impulso!");
@@ -835,7 +988,7 @@ function processFloatQueue() {
               floatText(document.getElementById("player"), `+${card.power}`, "lime");
               glowPlayer("green");
             }
-            log("Usou PROTOCOL-Campo De Força!");
+            log("Usou PROTOCOL-Reforço De Força!");
           } else if (card.name === "PROTOCOL-Campo De Força") {
             if (playerHP <= 25) {
               playerShield += card.power;
@@ -843,6 +996,13 @@ function processFloatQueue() {
               glowPlayer("blue");
             }
             log("Usou PROTOCOL-Campo De Força!");
+          } else if (card.name === "Brilhando") {
+            if (playerHP == playerMaxHP) {
+              playerShield += card.power;
+              floatText(document.getElementById("player"), `+${card.power}`, "cyan");
+              glowPlayer("blue");
+            }
+            log("Usou Brilhando!");
           } else if (card.name === "Impulso Defensivo") {
             energy += card.power;
             playerShield += card.power * 3;
@@ -858,10 +1018,85 @@ function processFloatQueue() {
             } else {
               playerShield += card.power;
               floatText(document.getElementById("player"), `+${card.power}`, "cyan");
+              glowPlayer("blue");
             }
             log("Usou Recicladora!");
           } else if (card.name === "Entulho") {
             log("Usou Entulho!");
+          } else if (card.name === "Compra Dupla") {
+            for (let i = 0; i < 2; i++) {
+              const newCard = {
+                ...allCards[Math.floor(Math.random() * allCards.length)],
+                power: allCards[Math.floor(Math.random() * allCards.length)].basePower
+              };
+              deck.push(newCard); // adiciona diretamente, ignorando limite
+            }
+            log("Usou Compra Dupla!");
+            glowPlayer("green");
+          } else if (card.name === "Escudo Retaliante") {
+            if (energy < card.cost) return;
+            energy -= card.cost;
+            if (enemies.length > 0) {
+              const dano = playerShield; // dano igual à armadura atual
+              animateDamage(enemies[0].el);
+              enemies[0].hp -= dano;
+              floatText(enemies[0].el, `-${dano}`, "red");
+              log("Usou Escudo Retaliante!");
+              glowPlayer("blue");
+            }
+          } else if (card.name === "Ferro Velho") {
+            if (energy < card.cost) return;
+            energy -= card.cost;
+            // Adiciona 2 cartas de Entulho na mão
+            for (let i = 0; i < 2; i++) {
+              deck.push({ ...allCards.find(c => c.name === "Entulho"), power: 0 });
+            }
+            log("Usou Ferro Velho! 2 cartas de Entulho adicionadas.");
+          } else if (card.name === "Destruir Carta") {
+            for (let i = deck.length - 1; i >= 0; i--) {
+              if (deck[i].type === "lixo") {
+                log(`Carta ${deck[i].name} destruída!`);
+                deck.splice(i, 1);
+              }
+            }
+            // Apenas redesenha a mão atual, sem adicionar novas cartas
+            drawCards();
+          } else if (card.name === "Ataque Reciclável") {
+            for (let i = deck.length - 1; i >= 0; i--) {
+              if (deck[i].type === "lixo") {
+                log(`Carta ${deck[i].name} destruída!`);
+                deck.splice(i, 1);
+                animateDamage(enemies[0].el);
+                enemies[0].hp -= 5;
+                floatText(enemies[0].el, `-${5}`, "red");
+              }
+            }
+            // Apenas redesenha a mão atual, sem adicionar novas cartas
+            drawCards();
+          } else if (card.name === "Defesa Reciclável") {
+            for (let i = deck.length - 1; i >= 0; i--) {
+              if (deck[i].type === "lixo") {
+                log(`Carta ${deck[i].name} destruída!`);
+                deck.splice(i, 1);
+                playerShield += 5;
+                glowPlayer("blue");
+                floatText(document.getElementById("player"), `+${5}`, "cyan");
+              }
+            }
+            // Apenas redesenha a mão atual, sem adicionar novas cartas
+            drawCards();
+          } else if (card.name === "Xenofluxo Reciclável") {
+            for (let i = deck.length - 1; i >= 0; i--) {
+              if (deck[i].type === "lixo") {
+                log(`Carta ${deck[i].name} destruída!`);
+                deck.splice(i, 1);
+                energy += 1;
+                glowPlayer("green");
+                floatText(document.getElementById("player"), `+${1}`, "cyan");
+              }
+            }
+            // Apenas redesenha a mão atual, sem adicionar novas cartas
+            drawCards();
           }
 
           div.classList.add("card-remove");
@@ -880,7 +1115,7 @@ function processFloatQueue() {
     // buff em itens aumenta esse
     let maoInicio = 7;
     // buff em cards aumenta esse
-    let limiteMao = 7;
+    let limiteMao = 29;
 
     function drawNewCards() {
       deck.length = 0;
@@ -899,21 +1134,21 @@ function processFloatQueue() {
     }
 
     function takeDamage(dmg) {
-  if (playerShield > 0) {
-    const absorbed = Math.min(playerShield, dmg);
-    playerShield -= absorbed;
-    dmg -= absorbed;
-  }
+      if (playerShield > 0) {
+        const absorbed = Math.min(playerShield, dmg);
+        playerShield -= absorbed;
+        dmg -= absorbed;
+      }
 
-  if (dmg > 0) {
-    playerHP -= dmg;
-  }
+      if (dmg > 0) {
+        playerHP -= dmg;
+      }
 
-  if (playerHP < 0) playerHP = 0;
+      if (playerHP < 0) playerHP = 0;
 
-  playerShield = 0;
-  updateHUD();
-}
+      playerShield = 0;
+      updateHUD();
+    }
 
     function enemyTurn() {
       setTimeout(() => {
@@ -948,25 +1183,25 @@ function processFloatQueue() {
     }
 
     function checkEnemies() {
-  for (let i = enemies.length - 1; i >= 0; i--) {
-    if (enemies[i].hp <= 0) {
-      log(`${enemies[i].name} foi derrotado!`);
-      enemies[i].el.remove();
-      enemies[i].barEl.parentElement.remove();
-      enemies.splice(i, 1);
-    }
-  }
+      for (let i = enemies.length - 1; i >= 0; i--) {
+        if (enemies[i].hp <= 0) {
+          log(`${enemies[i].name} foi derrotado!`);
+          enemies[i].el.remove();
+          enemies[i].barEl.parentElement.remove();
+          enemies.splice(i, 1);
+        }
+      }
 
-  // só abre o popup e reseta a mão se todos os inimigos morreram
-  if (enemies.length === 0) {
-    document.getElementById("overlay").style.display = "block";
-    document.getElementById("popup").style.display = "block";
-    gerarItens();
-    limiteMao = maoInicio;
-              document.getElementById("enemies").style.display = "none";
-          document.getElementById("lifeBarsContainer").style.display = "none";
-  }
-}
+      // só abre o popup e reseta a mão se todos os inimigos morreram
+      if (enemies.length === 0) {
+        document.getElementById("overlay").style.display = "block";
+        document.getElementById("popup").style.display = "block";
+        gerarItens();
+        limiteMao = maoInicio;
+        document.getElementById("enemies").style.display = "none";
+        document.getElementById("lifeBarsContainer").style.display = "none";
+      }
+    }
 
     function gerarItens() {
       const container = document.getElementById("recompensa");
@@ -1011,9 +1246,9 @@ function processFloatQueue() {
     }
 
     spawnEnemies(); // gera inimigos aleatórios no início
-drawNewCards();
-drawCards();
-updateHUD();
+    drawNewCards();
+    drawCards();
+    updateHUD();
   </script>
 </body>
 
