@@ -585,10 +585,10 @@
       {
         name: "Explosão",
         cost: 1,
-        basePower: 3,
+        basePower: 4,
         rarity: "common",
         img: "./img/cards/atk/ExplosaoDeEnergia.png",
-        desc: "Causa 3 de dano em área a todos os inimigos."
+        desc: "Causa 4 de dano em área a todos os inimigos."
       },
       {
         name: "Chuva De Fragmentos",
@@ -612,7 +612,7 @@
         basePower: 30,
         rarity: "epic",
         img: "./img/cards/atk/bombardeio.png",
-        desc: "Cause 30 de dano a TODOS incuindo você."
+        desc: "Cause 30 de dano em area, a cada inimigo no campo receba 15 de dano (max 45)."
       },
       {
         name: "Defesa",
@@ -700,7 +700,7 @@
         basePower: 1,
         rarity: "epic",
         img: "./img/cards/buff/impulsoVerd.png",
-        desc: "Aumenta a mão em 1 até o final da luta, max de 3 usos."
+        desc: "Aumenta a mão em 1 até o final da luta (limite da mão 10)"
       },
       {
         name: "Golpe Neural Retaliante",
@@ -1006,14 +1006,13 @@
               animateDamage(e.el);
               e.hp -= card.power;
               floatText(e.el, `-${card.power}`, "red");
-              let dano = card.power;
+              let dano = 15;
 
               if (playerShield > 0) {
                 let absorbed = Math.min(dano, playerShield);
                 playerShield -= absorbed;
                 dano -= absorbed;
               }
-
               if (dano > 0) {
                 playerHP -= dano;
               }
@@ -1076,7 +1075,7 @@
             log("Beserck!");
             floatText(document.getElementById("player"), `-${card.power}`, "red");
           } else if (card.name === "Impulso") {
-            if (limiteMao < maoInicio + 3) {
+            if (limiteMao < 10) {
               limiteMao += 1;
             }
             glowPlayer("green");
@@ -1210,7 +1209,7 @@
             const matches = [];
             for (let j = deck.length - 1; j >= 0; j--) {
               const c = deck[j];
-              if (c !== card && (c.type === "lixo" || c.type === "gaea")) {
+              if (c !== card && (c.type === "lixo")) {
                 matches.push(c);
                 toRemove.add(c);
               }
