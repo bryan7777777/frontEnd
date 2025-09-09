@@ -274,7 +274,7 @@
       background-size: cover;
     }
 
-    .cintilante{
+    .cintilante {
       background-image: url("img/cards/cintilante.png");
       background-position: center;
       background-repeat: no-repeat;
@@ -318,15 +318,16 @@
     }
 
     .cintilante {
-    box-shadow: 0 0 30px rgb(208, 0, 255);
+      box-shadow: 0 0 30px rgb(208, 0, 255);
       border: 3px solid rgb(243, 186, 255);
     }
+
     .cintilante img {
       border: 3px solid rgb(243, 186, 255);
     }
 
     /* cria a borda com gradiente */
-    .cintilante::before img{
+    .cintilante::before img {
       content: "";
       position: absolute;
       top: -3px;
@@ -341,46 +342,49 @@
 
     /* efeito de giro do arco-íris */
     .card.cintilante {
-  position: relative;
-  overflow: hidden;
-}
+      position: relative;
+      overflow: hidden;
+    }
 
-.card.cintilante::before {
-  margin-top: -20px;
-  margin-left: -60px;
-  width: 300px;
-  height: 300px;
-  content: "";
-  position: absolute;
-  inset: -10px;
-  border-radius: 100%;
-  background: conic-gradient(
-    rgba(255, 255, 255, 0.3),
-    rgba(238, 130, 238, 0.3),
-    rgba(0, 255, 255, 0.3),
-    rgba(0, 255, 0, 0.3),
-    rgba(255, 255, 0, 0.3),
-    rgba(255, 166, 0, 0.3),
-    rgba(255, 0, 0, 0.3),
-    rgba(255, 255, 255, 0.3)
-  );
-  z-index: -1;
-  animation: spin 17.5s linear infinite;
-  
-  /* inicia invisível */
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
+    .card.cintilante::before {
+      margin-top: -20px;
+      margin-left: -60px;
+      width: 300px;
+      height: 300px;
+      content: "";
+      position: absolute;
+      inset: -10px;
+      border-radius: 100%;
+      background: conic-gradient(rgba(255, 255, 255, 0.3),
+          rgba(238, 130, 238, 0.3),
+          rgba(0, 255, 255, 0.3),
+          rgba(0, 255, 0, 0.3),
+          rgba(255, 255, 0, 0.3),
+          rgba(255, 166, 0, 0.3),
+          rgba(255, 0, 0, 0.3),
+          rgba(255, 255, 255, 0.3));
+      z-index: -1;
+      animation: spin 17.5s linear infinite;
 
-/* Ao passar o mouse na card, o ::before aparece */
-.card.cintilante:hover::before {
-  opacity: 1;
-}
+      /* inicia invisível */
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+    /* Ao passar o mouse na card, o ::before aparece */
+    .card.cintilante:hover::before {
+      opacity: 1;
+    }
+
+    @keyframes spin {
+      0% {
+        transform: rotate(0deg);
+      }
+
+      100% {
+        transform: rotate(360deg);
+      }
+    }
 
     #log {
       width: 140px;
@@ -544,8 +548,7 @@
         basePower: 20,
         rarity: "cintilante",
         img: "./img/cards/cintilante/gaea.png",
-        desc: "Recicla lixo. Ganhe vida, defesa e cause dano em 20, por cada carta de lixo reciclada(+20).",
-        type: "lixo"
+        desc: "Recicla lixo. Ganhe vida, defesa e cause dano em 20 por cada carta de lixo reciclada.",
       },
       {
         name: "Impacto Bruto",
@@ -1200,22 +1203,63 @@
             // Apenas redesenha a mão atual, sem adicionar novas cartas
             drawCards();
           } else if (card.name === "GÆPROTOCOL") {
-            for (let i = deck.length - 1; i >= 0; i--) {
-              if (deck[i].type === "lixo") {
-                log(`Carta ${deck[i].name} destruída!`);
-                deck.splice(i, 1);
-                animateDamage(enemies[0].el);
-                enemies[0].hp -= 20;
-                floatText(enemies[0].el, `-${20}`, "red");
-                glowPlayer("cintilante");
-                playerShield += card.power;
-                playerHP = Math.min(playerHP + card.power, playerMaxHP);
-                floatText(document.getElementById("player"), `+${20}`, "cyan");
-                floatText(document.getElementById("player"), `+${20}`, "green");
+            const power = card.basePower ?? card.power ?? 0;
+            const toRemove = new Set();
+            toRemove.add(card);
+            // coleta somente as cartas da "mão" (o seu deck representa a mão aqui)
+            const matches = [];
+            for (let j = deck.length - 1; j >= 0; j--) {
+              const c = deck[j];
+              if (c !== card && (c.type === "lixo" || c.type === "gaea")) {
+                matches.push(c);
+                toRemove.add(c);
               }
             }
-            // Apenas redesenha a mão atual, sem adicionar novas cartas
-            drawCards();
+            if (matches.length === 0) {
+              log("Nenhuma carta de lixo/gaea para reciclar.");
+              div.classList.add("card-remove");
+              setTimeout(() => {
+                for (let k = deck.length - 1; k >= 0; k--) {
+                  if (deck[k] === card) { deck.splice(k, 1); break; }
+                }
+                drawCards();
+                updateHUD();
+              }, 300);
+              return;
+            }
+
+            // calcula efeitos agregados
+            const totalRemoved = matches.length;
+            const totalDamage = totalRemoved * power;
+            const totalHeal = totalRemoved * power;
+            const totalShield = totalRemoved * power;
+
+            // aplica efeitos (um único efeito agregado)
+            if (enemies.length > 0) {
+              animateDamage(enemies[0].el);
+              enemies[0].hp -= totalDamage;
+              floatText(enemies[0].el, `-${totalDamage}`, "red");
+            }
+            glowPlayer("cintilante");
+            playerShield += totalShield;
+            playerHP = Math.min(playerHP + totalHeal, playerMaxHP);
+            floatText(document.getElementById("player"), `+${totalShield}`, "cyan");
+            floatText(document.getElementById("player"), `+${totalHeal}`, "green");
+
+            // anima a carta usada
+            div.classList.add("card-remove");
+
+            // após animação, remova **todos** os objetos marcados de uma vez (iterando de trás p/ frente)
+            setTimeout(() => {
+              for (let k = deck.length - 1; k >= 0; k--) {
+                if (toRemove.has(deck[k])) deck.splice(k, 1);
+              }
+              drawCards();
+              checkEnemies();
+              updateHUD();
+            }, 300);
+
+            return; // importante: evita que o handler continue e faça o splice(i,1) genérico
           }
 
           div.classList.add("card-remove");
