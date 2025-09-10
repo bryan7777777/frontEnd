@@ -1166,42 +1166,138 @@
             // Apenas redesenha a mão atual, sem adicionar novas cartas
             drawCards();
           } else if (card.name === "Ataque Reciclável") {
-            for (let i = deck.length - 1; i >= 0; i--) {
-              if (deck[i].type === "lixo") {
-                log(`Carta ${deck[i].name} destruída!`);
-                deck.splice(i, 1);
-                animateDamage(enemies[0].el);
-                enemies[0].hp -= 5;
-                floatText(enemies[0].el, `-${5}`, "red");
-              }
-            }
-            // Apenas redesenha a mão atual, sem adicionar novas cartas
-            drawCards();
-          } else if (card.name === "Defesa Reciclável") {
-            for (let i = deck.length - 1; i >= 0; i--) {
-              if (deck[i].type === "lixo") {
-                log(`Carta ${deck[i].name} destruída!`);
-                deck.splice(i, 1);
-                playerShield += 5;
-                glowPlayer("blue");
-                floatText(document.getElementById("player"), `+${5}`, "cyan");
-              }
-            }
-            // Apenas redesenha a mão atual, sem adicionar novas cartas
-            drawCards();
-          } else if (card.name === "Xenofluxo Reciclável") {
-            for (let i = deck.length - 1; i >= 0; i--) {
-              if (deck[i].type === "lixo") {
-                log(`Carta ${deck[i].name} destruída!`);
-                deck.splice(i, 1);
-                energy += 1;
-                glowPlayer("green");
-                floatText(document.getElementById("player"), `+${1}`, "cyan");
-              }
-            }
-            // Apenas redesenha a mão atual, sem adicionar novas cartas
-            drawCards();
-          } else if (card.name === "GÆPROTOCOL") {
+  // marca as cartas a remover (por identidade)
+  const toRemove = new Set();
+  toRemove.add(card); // também remover a própria carta usada
+  let lixoRemovido = 0;
+
+  for (let j = 0; j < deck.length; j++) {
+    const c = deck[j];
+    if (c !== card && c.type === "lixo") {
+      toRemove.add(c);
+      lixoRemovido++;
+    }
+  }
+
+  if (lixoRemovido === 0) {
+    log("Nenhuma carta de lixo na mão para reciclar.");
+    // anima só a carta usada e remova-a normalmente
+    div.classList.add("card-remove");
+    setTimeout(() => {
+      for (let k = deck.length - 1; k >= 0; k--) {
+        if (deck[k] === card) { deck.splice(k, 1); break; }
+      }
+      drawCards();
+      updateHUD();
+    }, 300);
+    return;
+  }
+
+  // aplica efeito imediatamente
+  const dano = lixoRemovido * 5;
+  if (enemies.length > 0) {
+    enemies[0].hp -= dano;
+    animateDamage(enemies[0].el);
+    floatText(enemies[0].el, `-${dano}`, "red");
+  }
+  updateHUD();
+
+  // anima e depois remove todas as cartas marcadas
+  div.classList.add("card-remove");
+  setTimeout(() => {
+    for (let k = deck.length - 1; k >= 0; k--) {
+      if (toRemove.has(deck[k])) deck.splice(k, 1);
+    }
+    drawCards();
+    checkEnemies();
+    updateHUD();
+  }, 300);
+
+  return; // importante: impede que o handler padrão remova outra carta
+} else if (card.name === "Defesa Reciclável") {
+  const toRemove = new Set();
+  toRemove.add(card);
+  let lixoRemovido = 0;
+
+  for (let j = 0; j < deck.length; j++) {
+    const c = deck[j];
+    if (c !== card && c.type === "lixo") {
+      toRemove.add(c);
+      lixoRemovido++;
+    }
+  }
+
+  if (lixoRemovido === 0) {
+    log("Nenhuma carta de lixo na mão para reciclar.");
+    div.classList.add("card-remove");
+    setTimeout(() => {
+      for (let k = deck.length - 1; k >= 0; k--) {
+        if (deck[k] === card) { deck.splice(k, 1); break; }
+      }
+      drawCards();
+      updateHUD();
+    }, 300);
+    return;
+  }
+
+  const defesa = lixoRemovido * 5;
+  playerShield += defesa;
+  glowPlayer("blue");
+  floatText(document.getElementById("player"), `+${defesa}`, "cyan");
+  updateHUD();
+
+  div.classList.add("card-remove");
+  setTimeout(() => {
+    for (let k = deck.length - 1; k >= 0; k--) {
+      if (toRemove.has(deck[k])) deck.splice(k, 1);
+    }
+    drawCards();
+    updateHUD();
+  }, 300);
+
+  return;
+} else if (card.name === "Xenofluxo Reciclável") {
+  const toRemove = new Set();
+  toRemove.add(card);
+  let lixoRemovido = 0;
+
+  for (let j = 0; j < deck.length; j++) {
+    const c = deck[j];
+    if (c !== card && c.type === "lixo") {
+      toRemove.add(c);
+      lixoRemovido++;
+    }
+  }
+
+  if (lixoRemovido === 0) {
+    log("Nenhuma carta de lixo na mão para reciclar.");
+    div.classList.add("card-remove");
+    setTimeout(() => {
+      for (let k = deck.length - 1; k >= 0; k--) {
+        if (deck[k] === card) { deck.splice(k, 1); break; }
+      }
+      drawCards();
+      updateHUD();
+    }, 300);
+    return;
+  }
+
+  energy += lixoRemovido;
+  glowPlayer("green");
+  floatText(document.getElementById("player"), `+${lixoRemovido}`, "cyan");
+  updateHUD();
+
+  div.classList.add("card-remove");
+  setTimeout(() => {
+    for (let k = deck.length - 1; k >= 0; k--) {
+      if (toRemove.has(deck[k])) deck.splice(k, 1);
+    }
+    drawCards();
+    updateHUD();
+  }, 300);
+
+  return;
+} else if (card.name === "GÆPROTOCOL") {
             const power = card.basePower ?? card.power ?? 0;
             const toRemove = new Set();
             toRemove.add(card);
