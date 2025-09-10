@@ -624,7 +624,7 @@
       },
       {
         name: "PROTOCOL-Campo De Força",
-        cost: 2,
+        cost: 1,
         basePower: 40,
         rarity: "epic",
         img: "./img/cards/def/campoDeForca.png",
@@ -688,11 +688,11 @@
       },
       {
         name: "PROTOCOL-Reforço Estrutural",
-        cost: 0,
-        basePower: 15,
+        cost: 1,
+        basePower: 20,
         rarity: "epic",
         img: "./img/cards/buff/reforcoDeEstrutura.png",
-        desc: "Cure 15 de vida se sua vida estiver em 25 ou menos."
+        desc: "Cure 20 de vida se sua vida estiver em 25 ou menos."
       },
       {
         name: "Impulso",
@@ -809,6 +809,22 @@
           { type: "attack", value: Math.random() < 0.5 ? 3 : 6 }
         ],
         img: "./img/inimigos/inimigo5.png"
+      },
+      {
+        name: "Boss Valquiria",
+        hp: 150,
+        behavior: () => [
+          { type: "attack", value: Math.random() < 0.5 ? 20 : 40 }
+        ],
+        img: "./img/inimigos/bossValquiria.png"
+      },
+      {
+        name: "Valquiria",
+        hp: 60,
+        behavior: () => [
+          { type: "attack", value: Math.random() < 0.5 ? 5 : 25 }
+        ],
+        img: "./img/inimigos/valquiria.png"
       },
       {
         name: "IA sacerdotisa",
@@ -1138,7 +1154,7 @@
             log("Usou Compra Dupla!");
             glowPlayer("green");
           } else if (card.name === "Escudo Retaliante") {
-            if (energy < card.cost) return;
+            if (energy <= card.cost) return;
             energy -= card.cost;
             if (enemies.length > 0) {
               const dano = playerShield; // dano igual à armadura atual
