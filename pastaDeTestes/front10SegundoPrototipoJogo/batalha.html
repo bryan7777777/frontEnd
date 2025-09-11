@@ -432,6 +432,10 @@
       }
     }
 
+    .healed {
+      animation: glow-green 0.8s ease-out;
+    }
+
     @keyframes glow-cintilante {
 
       0%,
@@ -847,6 +851,7 @@
       {
         name: "Tartaruga",
         hp: 54,
+        dano: 6,
         behavior: () => [{ type: "attack", value: 6 }],
         img: "./img/inimigos/minion.png",
         tipoDano: "⚔️"
@@ -854,27 +859,15 @@
       {
         name: "Tatu corrompido",
         hp: 60,
+        dano: 8,
         behavior: () => [{ type: "attack", value: 8 }],
         img: "./img/inimigos/tatu.png",
         tipoDano: "⚔️"
       },
       {
-        name: "Boss Alfa",
-        hp: 100,
-        behavior: () => [{ type: "attackVida", value: 10 }],
-        img: "./img/inimigos/bossLobo.png",
-        tipoDano: "💀"
-      },
-      {
-        name: "Lobo",
-        hp: 20,
-        behavior: () => [{ type: "attackVida", value: 4 }],
-        img: "./img/inimigos/lobo.png",
-        tipoDano: "💀"
-      },
-      {
         name: "Furungrolumelo",
         hp: 10,
+        dano: 24,
         behavior: () => [{ type: "attack", value: 24 }],
         img: "./img/inimigos/inimigo2.png",
         tipoDano: "⚔️"
@@ -882,6 +875,7 @@
       {
         name: "Abelha corrompida",
         hp: 6,
+        dano: 6,
         behavior: () => [{ type: "attack", value: 6 }],
         img: "./img/inimigos/abelha.png",
         tipoDano: "⚔️"
@@ -889,6 +883,7 @@
       {
         name: "Ferrujão",
         hp: 40,
+        dano: 12,
         behavior: () => [{ type: "attack", value: 12 }],
         img: "./img/inimigos/inimigo1.png",
         tipoDano: "⚔️"
@@ -896,6 +891,7 @@
       {
         name: "Drone agricola",
         hp: 8,
+        dano: 6,
         behavior: () => [{ type: "attackVida", value: 6 }],
         img: "./img/inimigos/inimigo5.png",
         tipoDano: "💀"
@@ -903,6 +899,7 @@
       {
         name: "Boss Valquiria",
         hp: 150,
+        dano: 20,
         behavior: () => [
           { type: "attack", value: Math.random() < 0.5 ? 20 : 40 }
         ],
@@ -912,6 +909,7 @@
       {
         name: "Valquiria",
         hp: 40,
+        dano: 7,
         behavior: () => [{ type: "attackVida", value: 7 }],
         img: "./img/inimigos/valquiria.png",
         tipoDano: "💀"
@@ -919,9 +917,28 @@
       {
         name: "IA sacerdotisa",
         hp: 24,
-        behavior: () => [{ type: "attackVida", value: 6 }],
+        dano: 6,
+        behavior: () => [{ type: "heal", value: 6 }],
         img: "./img/inimigos/sacerdotisa.png",
+        tipoDano: "💚"
+      },
+      {
+        name: "Boss Alfa",
+        hp: 100,
+        dano: 10,
+        behavior: () => [{ type: "attackVida", value: 10 }],
+        img: "./img/inimigos/bossLobo.png",
         tipoDano: "💀"
+      },
+      {
+        name: "Lobo",
+        hp: 20,
+        dano: 5,
+        behavior: () => [
+          { type: "attack", value: Math.random() < 0.5 ? 5 : 10 }
+        ],
+        img: "./img/inimigos/lobo.png",
+        tipoDano: "⚔️✨"
       }
     ];
 
@@ -950,16 +967,18 @@
         const enemy = {
           name: base.name,
           hp: base.hp,
+          maxHp: base.hp,
+          dano: base.dano,
           behavior: base.behavior,
           el: createEnemy(base.img),
-          tipoDano : base.tipoDano
+          tipoDano: base.tipoDano
         };
         enemies.push(enemy);
 
         // cria barra de status individual
         const lifeBar = document.createElement("p");
         lifeBar.className = "enemy-bar";
-        lifeBar.innerHTML = `| ❤️ <strong>${enemy.name}: <span class="enemy-hp">${enemy.hp}</span> </strong> ${enemy.tipoDano} <strong>${enemy.behavior()[0].value} | </strong>`;
+        lifeBar.innerHTML = `| ❤️ <strong>${enemy.name}: <span class="enemy-hp">${enemy.hp}</span> </strong> ${enemy.tipoDano} <strong>${enemy.dano} | </strong>`;
         document.getElementById("lifeBarsContainer").appendChild(lifeBar);
 
         // linka a barra ao inimigo
@@ -1253,8 +1272,8 @@
             animateDamage(enemies[0].el);
             enemies[0].hp -= playerShield;
             floatText(enemies[0].el, `-${playerShield}`, "red");
-              log("Usou Escudo Retaliante!");
-              glowPlayer("blue");
+            log("Usou Escudo Retaliante!");
+            glowPlayer("blue");
           } else if (card.name === "Restos de meca") {
             if (energy < card.cost) return;
             energy -= card.cost;
@@ -1285,7 +1304,7 @@
               deck.push({ ...allCards.find(c => c.name === "Lobo"), power: 0 });
             }
             log("Usou Alcateia! 2 cartas de Lobo adicionadas.");
-          }  else if (card.name === "Lobo") {
+          } else if (card.name === "Lobo") {
             animateDamage(document.getElementById("player"));
             playerHP -= 2;
             log("Carta Lobo atacou você!");
@@ -1317,7 +1336,7 @@
               return;
             }
 
-            
+
             updateHUD();
 
             // anima e depois remove todas as cartas marcadas
@@ -1591,15 +1610,47 @@
 
               if (dano > 0) {
                 playerHP -= dano;
-              } 
-            } else if (act.type === "attackVida"){
-              playerHP -= act.value;
-            }
-            animateDamage(document.getElementById("player"));
+              }
+
+              animateDamage(document.getElementById("player"));
               floatText(document.getElementById("player"), `-${act.value}`, "orange");
               log(`${e.name} atacou!`);
+            } else if (act.type === "attackVida") {
+              playerHP -= act.value;
+            } else if (act.type === "heal") {
+              // seleciona o inimigo "mais à frente" (preferência: enemies[0], se não for ele)
+              let target = null;
+              if (enemies.length > 0) {
+                if (enemies[0] !== e && enemies[0].hp > 0) {
+                  target = enemies[0];
+                } else {
+                  // procura o primeiro vivo que não seja o curandeiro
+                  for (let t of enemies) {
+                    if (t !== e && t.hp > 0) { target = t; break; }
+                  }
+                }
+              }
+              // se não achar outro alvo, opcional: cura a si mesmo
+              if (!target) {
+                if (e.hp > 0) target = e;
+              }
+              if (target) {
+                const max = target.maxHp ?? target.hp;
+                const healed = act.value;
+                target.hp = Math.min(target.hp + healed, max);
+                floatText(target.el, `+${healed}`, "green");
+                log(`${e.name} curou ${target.name} em ${healed} de HP!`);
+                // opcional: breve efeito visual
+                target.el.classList.add("healed");
+                setTimeout(() => target.el.classList.remove("healed"), 600);
+                // opcional: breve efeito visual
+                target.el.classList.add("healed");
+                setTimeout(() => target.el.classList.remove("healed"), 600);
+              }
+            }
           });
         });
+
         energy = 3;
         playerShield = 0;
         drawNewCards();
