@@ -1693,7 +1693,7 @@
             enemies.splice(index, 1);
 
             // se não houver mais inimigos, abre popup
-            if (enemies.length === 0) {
+            if (enemies.length === 0 && playerHP > 0) {
               document.getElementById("overlay").style.display = "block";
               document.getElementById("popup").style.display = "block";
               gerarItens();
