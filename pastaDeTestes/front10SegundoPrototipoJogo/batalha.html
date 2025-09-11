@@ -406,12 +406,12 @@
       0%,
       100% {
         box-shadow: 0 0 0px rgb(79, 158, 255);
-        border-radius: 100%;
+        border-radius: 0 0 100% 100%;
       }
 
       50% {
         box-shadow: 0 0 65px rgb(79, 158, 255);
-        border-radius: 45%;
+        border-radius: 0 0 100% 100%;
         /* transform: rotate(360deg); */
       }
     }
@@ -442,8 +442,8 @@
       }
 
       50% {
-        box-shadow: 0 0 65px rgb(205, 112, 231);
-        background-color: rgba(203, 112, 231, 0.35);
+        box-shadow: 0 0 65px rgb(255, 255, 255);
+        background-color: rgba(255, 255, 255, 0.35);
         border-radius: 100%;
       }
     }
@@ -553,18 +553,18 @@
       {
         name: "Impacto Bruto",
         cost: 3,
-        basePower: 20,
+        basePower: 30,
         rarity: "epic",
         img: "./img/cards/atk/Impacto.png",
-        desc: "Causa 20 de dano ao inimigo."
+        desc: "Causa 25 de dano ao inimigo."
       },
       {
         name: "Ataque",
         cost: 1,
-        basePower: 4,
+        basePower: 6,
         rarity: "common",
         img: "./img/cards/atk/LancaGranadas.png",
-        desc: "Causa 4 de dano ao inimigo."
+        desc: "Causa 6 de dano ao inimigo."
       },
       {
         name: "Drenagem",
@@ -577,24 +577,24 @@
       {
         name: "Rajada Dupla",
         cost: 1,
-        basePower: 4,
+        basePower: 6,
         rarity: "rare",
         img: "./img/cards/atk/tiroCarregado.png",
-        desc: "Ataca 2 vezes com 4 de dano cada."
+        desc: "Ataca 2 vezes com 6 de dano cada."
       },
       {
         name: "Explosão",
         cost: 1,
-        basePower: 4,
+        basePower: 6,
         rarity: "common",
         img: "./img/cards/atk/ExplosaoDeEnergia.png",
-        desc: "Causa 4 de dano em área a todos os inimigos."
+        desc: "Causa 6 de dano em área a todos os inimigos."
       },
       {
         name: "Chuva De Fragmentos",
-        cost: 3,
+        cost: 2,
         basePower: 12,
-        rarity: "epic",
+        rarity: "rare",
         img: "./img/cards/atk/ChuvaDeFragmento.png",
         desc: "Causa 12 de dano em área a todos os inimigos."
       },
@@ -649,10 +649,10 @@
       {
         name: "Escudo",
         cost: 1,
-        basePower: 7,
+        basePower: 8,
         rarity: "common",
         img: "./img/cards/def/escudoHolo.png",
-        desc: "Cria um escudo de 7 pontos."
+        desc: "Cria um escudo de 8 pontos."
       },
       {
         name: "Sistema de reflexão",
@@ -673,10 +673,10 @@
       {
         name: "Cura",
         cost: 1,
-        basePower: 7,
+        basePower: 6,
         rarity: "common",
         img: "./img/cards/buff/Cura.png",
-        desc: "Recupera 7 de vida."
+        desc: "Recupera 6 de vida."
       },
       {
         name: "Mineração",
@@ -708,11 +708,11 @@
         basePower: playerHP,
         rarity: "epic",
         img: "./img/cards/buff/neural.png",
-        desc: "Cause dano igual sua vida atual, perca 50% da vida atual"
+        desc: "Cause dano igual sua vida atual, perca 25 da vida atual"
       },
       {
         name: "Sobre Carga",
-        cost: 2,
+        cost: 1,
         basePower: 6,
         rarity: "rare",
         img: "./img/cards/buff/sobreCarga.png",
@@ -729,10 +729,10 @@
       {
         name: "Recicladora",
         cost: 1,
-        basePower: 7,
+        basePower: 15,
         rarity: "legend",
         img: "./img/cards/reciclagem/reciclagem.png",
-        desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario ganhe 7 de escudo."
+        desc: "Se a vida do inimigo for exatamente 15, elimine ele, caso contrario ganhe 15 de escudo."
       },
       {
         name: "Destruir Carta",
@@ -1072,7 +1072,7 @@
             animateDamage(enemies[0].el);
             animateDamage(document.getElementById("player"));
             enemies[0].hp -= playerHP;
-            playerHP -= playerHP / 2;
+            playerHP -= 25;
             floatText(enemies[0].el, `-${playerHP * 2}`, "red");
             log("Usou Golpe Neural Retaliante!");
             floatText(document.getElementById("player"), `${"-50%"}`, "red");
@@ -1154,16 +1154,11 @@
             log("Usou Compra Dupla!");
             glowPlayer("green");
           } else if (card.name === "Escudo Retaliante") {
-            if (energy <= card.cost) return;
-            energy -= card.cost;
-            if (enemies.length > 0) {
-              const dano = playerShield; // dano igual à armadura atual
-              animateDamage(enemies[0].el);
-              enemies[0].hp -= dano;
-              floatText(enemies[0].el, `-${dano}`, "red");
+            animateDamage(enemies[0].el);
+            enemies[0].hp -= playerShield;
+            floatText(enemies[0].el, `-${playerShield}`, "red");
               log("Usou Escudo Retaliante!");
               glowPlayer("blue");
-            }
           } else if (card.name === "Ferro Velho") {
             if (energy < card.cost) return;
             energy -= card.cost;
