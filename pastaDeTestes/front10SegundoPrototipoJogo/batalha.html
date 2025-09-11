@@ -917,10 +917,10 @@
       {
         name: "IA sacerdotisa",
         hp: 24,
-        dano: 6,
-        behavior: () => [{ type: "heal", value: 6 }],
+        dano: 2,
+        behavior: () => [{ type: "heal", value: Math.random() < 0.5 ? 2 : 4 }],
         img: "./img/inimigos/sacerdotisa.png",
-        tipoDano: "💚"
+        tipoDano: "💚✨"
       },
       {
         name: "Boss Alfa",
