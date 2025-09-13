@@ -88,7 +88,7 @@ let playerHP = 100, energy = 3, playerShield = 0;
         basePower: 40,
         rarity: "epic",
         img: "./img/cards/def/campoDeForca.png",
-        desc: "Se sua vida for 25 ou menos ganhe 40 de escudo"
+        desc: "Se sua vida for 30 ou menos ganhe 45 de escudo"
       },
       {
         name: "Brilhando",
@@ -152,7 +152,7 @@ let playerHP = 100, energy = 3, playerShield = 0;
         basePower: 20,
         rarity: "epic",
         img: "./img/cards/buff/reforcoDeEstrutura.png",
-        desc: "Cure 20 de vida se sua vida estiver em 25 ou menos."
+        desc: "Cure 20 de vida se sua vida estiver em 30 ou menos."
       },
       {
         name: "Impulso",
@@ -445,7 +445,7 @@ let playerHP = 100, energy = 3, playerShield = 0;
     }
 
     function updateHUD() {
-      document.getElementById("hp").textContent = `${playerHP} | 🛡️ ${playerShield}  `;
+      document.getElementById("hp").textContent = `${playerHP} / ${playerMaxHP} | 🛡️ ${playerShield}  `;
       document.getElementById("energy").textContent = energy;
 
       enemies.forEach(e => {
@@ -588,6 +588,7 @@ let playerHP = 100, energy = 3, playerShield = 0;
               e.hp -= card.power;
               floatText(e.el, `-${card.power}`, "red");
               let dano = 15;
+              floatText(document.getElementById("player"), `-${dano}`, "red");
 
               if (playerShield > 0) {
                 let absorbed = Math.min(dano, playerShield);
@@ -668,14 +669,14 @@ let playerHP = 100, energy = 3, playerShield = 0;
             floatText(document.getElementById("player"), `+${card.power}`, "lime");
             log("Usou Impulso!");
           } else if (card.name === "PROTOCOL-Reforço Estrutural") {
-            if (playerHP <= 25) {
+            if (playerHP <= 30) {
               playerHP = Math.min(playerHP + card.power, playerMaxHP);
               floatText(document.getElementById("player"), `+${card.power}`, "lime");
               glowPlayer("green");
             }
             log("Usou PROTOCOL-Reforço De Força!");
           } else if (card.name === "PROTOCOL-Campo De Força") {
-            if (playerHP <= 25) {
+            if (playerHP <= 30) {
               playerShield += card.power;
               floatText(document.getElementById("player"), `+${card.power}`, "cyan");
               glowPlayer("blue");
