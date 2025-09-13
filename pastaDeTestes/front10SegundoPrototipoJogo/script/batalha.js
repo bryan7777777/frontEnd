@@ -440,8 +440,6 @@ let playerHP = 100, energy = 3, playerShield = 0;
         // linka a barra ao inimigo
         enemy.barEl = lifeBar.querySelector(".enemy-hp");
       }
-
-      enemiesContainer.style.display = "flex";
     }
 
     function updateHUD() {
